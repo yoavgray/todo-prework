@@ -1,8 +1,0 @@
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/TodoItemAdapter$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/MainActivity$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/TodoItemAdapter$ItemHolder$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/TodoItemAdapter$1$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/android/tools/fd/runtime/AppPatchesLoaderImpl.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/R$style$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/R$styleable$override.class
-CHANGED,/home/yoav/AndroidStudioProjects/ToDoOrNotToDo/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/prework/mytodoapp/todoornottodo/R$string$override.class
