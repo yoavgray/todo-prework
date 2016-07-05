@@ -1,6 +1,7 @@
 package com.prework.mytodoapp.todoornottodo;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +14,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
+public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
     Context context;
     int layoutResourceId;
-    List<TodoItem> data = null;
+    List<ListItem> data = null;
 
-    public TodoItemAdapter(Context context, int layoutResourceId, List<TodoItem> data) {
+    public TodoItemAdapter(Context context, int layoutResourceId, List<ListItem> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -27,57 +28,47 @@ public class TodoItemAdapter extends ArrayAdapter<TodoItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         final ItemHolder holder;
 
-        if (row == null)
-        {
+        if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ItemHolder();
             holder.tv = (TextView)row.findViewById(R.id.tvListView);
-            holder.cb = (CheckBox) row.findViewById(R.id.cbComplete);
+            holder.cb = (CheckBox)row.findViewById(R.id.cbComplete);
 
             row.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (ItemHolder)row.getTag();
         }
 
-        Log.d("kaki", position + " " + row.toString() + " " + parent.toString());
-
-        TodoItem todoItem = data.get(position);
-        holder.tv.setText(todoItem.getHeader());
+        final ListItem todoItem = data.get(position);
+        holder.tv.setText(todoItem.getText());
         holder.cb.setChecked(todoItem.isChecked());
 
-        holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("kaki", "checkbox is " + isChecked);
-                if (isChecked == true) {
-                    holder.tv.setPaintFlags(holder.tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    holder.tv.setPaintFlags(holder.tv.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-                }
-            }
-        });
-
-        if (todoItem.isChecked() == true) {
+        if (todoItem.isChecked()) {
             holder.tv.setPaintFlags(holder.tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             holder.tv.setPaintFlags(holder.tv.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        return row;
-    }
+        holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    todoItem.setChecked(true);
+                    holder.tv.setPaintFlags(holder.tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    todoItem.setChecked(false);
+                    holder.tv.setPaintFlags(holder.tv.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+            }
+        });
 
-    @Override
-    public boolean isEnabled(int position)
-    {
-        return true;
+        return row;
     }
 
     static class ItemHolder

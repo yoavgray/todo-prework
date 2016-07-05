@@ -5,27 +5,35 @@ import android.widget.TextView;
 
 public class ListItem {
 
-    private String header;
+    private String text;
     private boolean isChecked;
 
-    public ListItem(String header, boolean isChecked) {
-        this.header = header;
+    public ListItem(String text, boolean isChecked) {
+        this.text = text;
         this.isChecked = isChecked;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public void setHeader(String header) {
-        this.header = header;
     }
 
     public boolean isChecked() {
         return isChecked;
     }
 
-    public void setCheckBox(boolean check) {
-        this.isChecked = check;
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "ListItem{" +
+                "text='" + text + '\'' +
+                ", isChecked=" + isChecked +
+                '}';
     }
 }
