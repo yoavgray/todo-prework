@@ -26,15 +26,15 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] Add a 'Complete' check box for each item to mark item as completed.
+* [x] Add a 'Complete' check box for each item to mark item as completed.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/h8KISOl.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [SilentCast](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
 
 ## Notes
 
