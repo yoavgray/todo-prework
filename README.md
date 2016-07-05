@@ -17,8 +17,12 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-* [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
 * [x] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
+
+The following **optional** features are not YET implemented:
+
+* [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
+
 * [ ] Add support for completion due dates for todo items (and display within listview item)
 * [ ] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [ ] Add support for selecting the priority of each todo item (and display in listview item)
@@ -30,11 +34,10 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough 
 
-Here's a walkthrough of implemented user stories:
+Here's a walkthrough of implemented user stories:<br>
+<img src="http://i.imgur.com/h8KISOl.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
 
-<img src='http://i.imgur.com/h8KISOl.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [SilentCast](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
+GIF created with [<a href="https://github.com/colinkeenan/silentcast">SilentCast</a>](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
 
 ## Notes
 
