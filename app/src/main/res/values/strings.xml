@@ -8,4 +8,15 @@
     <string name="ok">OK</string>
     <string name="add_task">Add a task</string>
     <string name="add_item">Add Item</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="set_date">Set Time</string>
+
+    <string-array name="priority_array">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+        <item>Super</item>
+    </string-array>
+
 </resources>
