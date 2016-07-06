@@ -1,13 +1,15 @@
 package com.prework.mytodoapp.todoornottodo;
 
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,6 +23,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     ListView lvItems;
     TextView tvCap, tvDateTime;
     EditText etText;
+    Spinner s;
     int year, month, day, hour, minute;
 
     final static int TEXT_START = 15;
@@ -47,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
         setupListViewListener();
 
+    }
+
+    //save data before leaving app
+    @Override
+    protected void onStop() {
+        super.onStop();
+        writeItems();
     }
 
     private void setupViews() {
@@ -77,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
                 if (items.get(position).isChecked()) {
                     Toast.makeText(getBaseContext(), "Uncheck 'Complete' checkbox to edit task", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent i = new Intent(getBaseContext(), EditTaskActivity.class);
-                    //we send text to present it in EditTaskActivity and position because the intent
-                    //will come back to us in a different function that does not know 'position'
-                    i.putExtra("text", items.get(position).getText());
-                    i.putExtra("position", position);
-                    startActivityForResult(i, REQUEST_CODE_EDIT_TASK);
+                    // Create and show the dialog.
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.addToBackStack(null);
+                    String text = items.get(position).getText();
+                    DialogFragment newFragment = EditTaskFragment.newInstance(text, position);
+                    newFragment.show(getSupportFragmentManager(), "Dialog");
                 }
             }
         });
@@ -93,20 +105,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case REQUEST_CODE_EDIT_TASK:
-                if (data.getStringExtra("change").equals("yes")) {
-                    //extracting changed task and position in the items ArrayList
-                    String changedText = data.getExtras().getString("text");
-                    int itemPosition = data.getIntExtra("position", 0);
-                    items.get(itemPosition).setText(changedText);
-                    itemsAdapter.notifyDataSetChanged();
-                    //make sure to keep the file updated
-                    writeItems();
-                } else {
-                    Toast.makeText(getBaseContext(), "Task was not changed", Toast.LENGTH_SHORT).show();
-                }
-                break;
-
             case REQUEST_CODE_CHOOSE_TIME:
                 if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(getBaseContext(), "Time and date were not set", Toast.LENGTH_SHORT).show();
@@ -116,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
                     day = data.getIntExtra("day", 4);
                     hour = data.getIntExtra("hour", 7);
                     minute = data.getIntExtra("minute", 30);
-                    tvDateTime.setText(month + "/" + day + "/" + year + "  " + hour + ":" + minute);
+                    String timeDisplay = month + "/" + day + "/" + year + "  " + hour + ":" + minute;
+                    tvDateTime.setText(timeDisplay);
                 }
                 break;
         }
@@ -134,16 +133,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
         String itemText = etText.getText().toString();
         //clean text field for the next task to be added
         etText.setText("");
-        tvDateTime.setText("Please set time");
+        tvDateTime.setText(R.string.please_set_time);
         itemsAdapter.add(new ListItem(itemText, false, year, month, day, hour, minute, 0));
         //make sure to keep file updated
         writeItems();
     }
 
+    //read list from saved file
     private void readItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
@@ -173,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //write list to a txt file
     private void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
@@ -186,11 +186,27 @@ public class MainActivity extends AppCompatActivity {
     //set this new function just to have a public access to writeItems()
     //through clicking on the checkbox, to save parameters
     public void notifyChange(View v) {
+        itemsAdapter.notifyDataSetChanged();
         writeItems();
     }
 
+    //just trying a different method - calling a function from onClick method in
+    //button XML attributes
     public void inflateChooseTimeDialog(View v) {
         Intent i = new Intent(this, SetTimeActivity.class);
         startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
+    }
+
+    //extracting values from EditTaskFragment dialog
+    public void onUserSelectValue(String text, int position) {
+        if (text != null) {
+            //extracting changed task and position in the items ArrayList
+            items.get(position).setText(text);
+            itemsAdapter.notifyDataSetChanged();
+            //make sure to keep the file updated
+            writeItems();
+        } else {
+            Toast.makeText(getBaseContext(), "Task was not changed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.prework.mytodoapp.todoornottodo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -50,8 +51,10 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
         final ListItem todoItem = data.get(position);
         holder.tvText.setText(todoItem.getText());
-        holder.tvDate.setText(todoItem.getMonth() + "/" + todoItem.getDay() + "/" + todoItem.getYear());
-        holder.tvTime.setText(todoItem.getHour() + ":" + todoItem.getMinute());
+        String dateDisplay = todoItem.getMonth() + "/" + todoItem.getDay() + "/" + todoItem.getYear();
+        holder.tvDate.setText(dateDisplay);
+        String timeDisplay = todoItem.getHour() + ":" + todoItem.getMinute();
+        holder.tvTime.setText(timeDisplay);
         holder.cb.setChecked(todoItem.isChecked());
 
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -82,10 +85,12 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        holder.cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        //OnCheckedChanged creates a bug while scrolling list. Views losetheir values (Checkboxes
+        //are getting unchecked, etc)
+        holder.cb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                if (((CheckBox)v).isChecked()) {
                     todoItem.setChecked(true);
                     holder.spinner.setEnabled(false);
                     holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

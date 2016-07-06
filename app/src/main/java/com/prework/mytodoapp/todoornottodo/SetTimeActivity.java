@@ -29,7 +29,6 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         cancel = (Button)findViewById(R.id.buttonCancelDialog);
         ok.setOnClickListener(this);
         cancel.setOnClickListener(this);
-
     }
 
     @Override

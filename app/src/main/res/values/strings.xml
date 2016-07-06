@@ -11,6 +11,8 @@
     <string name="time">Time</string>
     <string name="date">Date</string>
     <string name="set_date">Set Time</string>
+    <string name="edit_task">Edit Task:</string>
+    <string name="please_set_time">Please set time</string>
 
     <string-array name="priority_array">
         <item>Low</item>
