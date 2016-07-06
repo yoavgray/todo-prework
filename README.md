@@ -5,7 +5,7 @@ editing and deleting an existing item, and even marking an item as complete.
 
 Submitted by: **Yoav Gray**
 
-Time spent: **11** hours spent in total
+Time spent: **13** hours spent in total
 
 ## User Stories
 
@@ -20,16 +20,17 @@ The following **optional** features are implemented:
 * [x] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
 * [x] Add support for completion due dates for todo items (and display within listview item)
 * [x] Add support for selecting the priority of each todo item (and display in listview item)
+* [x] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 
 The following **optional** features are not YET implemented:
 
 * [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
-* [ ] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [ ] Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
 
 * [x] Add a 'Complete' check box for each item to mark item as completed.
+* [x] Set time and date for task is through a Dialog showing DatePicker and TimePicker
 
 ## Video Walkthrough 
 
