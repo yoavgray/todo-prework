@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_like_dislike"
+        android:icon="@drawable/ic_thumbs_up_down_white_24dp"
+        android:title="@string/action_like_dislike"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="ifRoom">
+            <!-- "file" submenu -->
+            <menu>
+                <item android:id="@+id/set_english"
+                    android:title="@string/set_english" />
+                <item android:id="@+id/set_spanish"
+                    android:title="@string/set_spanish" />
+                <!-- Device should support hebrew for this to be shown
+                <item android:id="@+id/set_hebrew"
+                    android:title="@string/set_hebrew" />
+                 -->
+            </menu>
+    </item>
+
+</menu>

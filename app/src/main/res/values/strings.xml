@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">To Do, Or Not To Do?</string>
-    <string name="dialog_message">Deleted tasks could not be restored!</string>
-    <string name="dialog_title">Delete task?</string>
-
-    <string name="complete">Complete</string>
+    <string name="dialog_delete_message">Deleted tasks could not be restored!</string>
+    <string name="dialog_delete_title">Delete task?</string>
+    <string name="complete">Completed</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="add_task">Add a task</string>
@@ -12,7 +11,17 @@
     <string name="date">Date</string>
     <string name="set_date">Set Time</string>
     <string name="edit_task">Edit Task:</string>
-    <string name="please_set_time">Please set time</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_like_dislike">Like/Dislike</string>
+    <string name="send_mail">Send</string>
+    <string name="mail_from_user">Hey Yoav,\n\nI really liked/disliked your app because (your text)\n\nYours truly,\nYOUR NAME</string>
+    <string name="set_english">English</string>
+    <string name="set_spanish">Spanish</string>
+    <string name="set_hebrew">Hebrew</string>
+    <string name="long_click">* Long click on a task will remove task from list</string>
+    <string name="task_empty">Task is empty!</string>
+    <string name="uncheck_task">Uncheck \'Complete\' checkbox to edit task</string>
+
 
     <string-array name="priority_array">
         <item>Low</item>

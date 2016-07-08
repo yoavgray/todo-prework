@@ -1,18 +1,25 @@
 package com.prework.mytodoapp.todoornottodo;
 
-import android.app.Dialog;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,25 +30,18 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE_EDIT_TASK = 0;
     private static final int REQUEST_CODE_CHOOSE_TIME = 1;
     List<ListItem> items;
     List<String> itemsFromFile;
     TodoItemAdapter itemsAdapter;
     ListView lvItems;
-    TextView tvCap, tvDateTime;
+    TextView tvCap;
     EditText etText;
-    Spinner s;
     int year, month, day, hour, minute;
-
-    final static int TEXT_START = 15;
-    final static int TEXT_CHECK_OFFSET = 3;
-    final static int IS_CHECKED_START = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
         readItems();
         setupViews();
         setupListViewListener();
-
+        ActionBar ab = getSupportActionBar();
+        Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo, null);
+        ab.setBackgroundDrawable(d);
+        ab.setDisplayShowTitleEnabled(false);
     }
 
     //save data before leaving app
@@ -61,13 +64,63 @@ public class MainActivity extends AppCompatActivity {
         writeItems();
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Resources res = getResources();
+        // Change locale settings in the app. I'm aware that this is not a good practice
+        // and that language should be set by the locale of the device. Just wanted to experiment
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        Intent intent = getIntent();
+
+        switch (item.getItemId()) {
+            case R.id.set_english:
+                conf.locale = new Locale("en".toLowerCase());
+                res.updateConfiguration(conf, dm);
+                finish();
+                startActivity(intent);
+                return true;
+
+            case R.id.set_spanish:
+                conf.locale = new Locale("es".toLowerCase());
+                res.updateConfiguration(conf, dm);
+                finish();
+                startActivity(intent);
+                return true;
+
+            /* Device should support hebrew letters for this to be shown
+            case R.id.set_hebrew:
+                conf.locale = new Locale("he".toLowerCase());
+                res.updateConfiguration(conf, dm);
+                finish();
+                startActivity(intent);
+                return true;
+            */
+
+            case R.id.action_like_dislike:
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
+                DialogFragment newFragment = LikeDislikeFragment.newInstance();
+                newFragment.show(getSupportFragmentManager(), "Dialog");
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void setupViews() {
         itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
-
-        tvDateTime = (TextView)findViewById(R.id.tvDateTime);
-        tvDateTime.setText("Please set time");
         tvCap = (TextView)findViewById(R.id.tvCap);
-        tvCap.setText("* Long click on a task to remove it from list");
+        tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(itemsAdapter);
     }
@@ -75,10 +128,25 @@ public class MainActivity extends AppCompatActivity {
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                items.remove(position);
-                itemsAdapter.notifyDataSetChanged();
-                writeItems();
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogStyle);
+                adb.setTitle(R.string.dialog_delete_title);
+                adb.setMessage(R.string.dialog_delete_message);
+                adb.setIcon(android.R.drawable.ic_dialog_alert);
+                adb.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        items.remove(position);
+                        itemsAdapter.notifyDataSetChanged();
+                        writeItems();
+                    } });
+
+                adb.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                    } });
+
+                AlertDialog alertDialog = adb.create();
+                alertDialog.show();
                 return true;
             }
         });
@@ -87,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (items.get(position).isChecked()) {
-                    Toast.makeText(getBaseContext(), "Uncheck 'Complete' checkbox to edit task", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), R.string.uncheck_task, Toast.LENGTH_LONG).show();
                 } else {
                     // Create and show the dialog.
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -95,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     String text = items.get(position).getText();
                     DialogFragment newFragment = EditTaskFragment.newInstance(text, position);
                     newFragment.show(getSupportFragmentManager(), "Dialog");
+                    ft.commit();
                 }
             }
         });
@@ -107,15 +176,20 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_CHOOSE_TIME:
                 if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(getBaseContext(), "Time and date were not set", Toast.LENGTH_SHORT).show();
+                    etText.setText("");
                 } else {
                     year = data.getIntExtra("year", 2016);
                     month = data.getIntExtra("month", 7);
                     day = data.getIntExtra("day", 4);
                     hour = data.getIntExtra("hour", 7);
                     minute = data.getIntExtra("minute", 30);
-                    String timeDisplay = month + "/" + day + "/" + year + "  " + hour + ":" + minute;
-                    tvDateTime.setText(timeDisplay);
+
+                    String itemText = etText.getText().toString();
+                    //clean text field for the next task to be added
+                    etText.setText("");
+                    itemsAdapter.add(new ListItem(itemText, false, year, month, day, hour, minute, 0));
+                    //make sure to keep file updated
+                    writeItems();
                 }
                 break;
         }
@@ -125,21 +199,18 @@ public class MainActivity extends AppCompatActivity {
         etText = (EditText)findViewById(R.id.etText);
 
         if (etText.getText().toString().equals("")) {
-            Toast.makeText(this, "Task is empty!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (tvDateTime.getText().subSequence(0,1).equals("P")) {
-            Toast.makeText(this, "Time and date are not set!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.task_empty, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String itemText = etText.getText().toString();
-        //clean text field for the next task to be added
-        etText.setText("");
-        tvDateTime.setText(R.string.please_set_time);
-        itemsAdapter.add(new ListItem(itemText, false, year, month, day, hour, minute, 0));
-        //make sure to keep file updated
-        writeItems();
+        inflateChooseTimeDialog();
+    }
+
+    //just trying a different method - calling a function from onClick method in
+    //button XML attributes
+    public void inflateChooseTimeDialog() {
+        Intent i = new Intent(this, SetTimeActivity.class);
+        startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
     }
 
     //read list from saved file
@@ -190,13 +261,6 @@ public class MainActivity extends AppCompatActivity {
         writeItems();
     }
 
-    //just trying a different method - calling a function from onClick method in
-    //button XML attributes
-    public void inflateChooseTimeDialog(View v) {
-        Intent i = new Intent(this, SetTimeActivity.class);
-        startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
-    }
-
     //extracting values from EditTaskFragment dialog
     public void onUserSelectValue(String text, int position) {
         if (text != null) {
@@ -208,5 +272,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getBaseContext(), "Task was not changed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onUserSendMail(String emailContent) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","yoavgray@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "To Do? Or Not To Do App");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, emailContent);
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }

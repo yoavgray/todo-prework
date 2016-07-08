@@ -2,6 +2,7 @@ package com.prework.mytodoapp.todoornottodo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
 
 public class TodoItemAdapter extends ArrayAdapter<ListItem> {
+
+    final static int PRIORITY_LOW = 0;
+    final static int PRIORITY_MEDIUM = 1;
+    final static int PRIORITY_HIGH = 2;
+    final static int PRIORITY_SUPER = 3;
 
     Context context;
     int layoutResourceId;
@@ -69,6 +76,22 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 todoItem.setPriority(position);
+                LinearLayout ll = (LinearLayout)parent.getParent();
+                switch (position) {
+                    case PRIORITY_LOW:
+                        ll.setBackgroundColor(Color.parseColor("#FFC9C9"));
+                        break;
+                    case PRIORITY_MEDIUM:
+                        ll.setBackgroundColor(Color.parseColor("#FD9B9B"));
+                        break;
+                    case PRIORITY_HIGH:
+                        ll.setBackgroundColor(Color.parseColor("#FD5656"));
+                        break;
+                    case PRIORITY_SUPER:
+                        ll.setBackgroundColor(Color.parseColor("#FF0000"));
+                        break;
+
+                }
             }
 
             @Override

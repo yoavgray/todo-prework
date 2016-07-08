@@ -19,6 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:fontFamily="monospace"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -44,31 +45,6 @@
                 android:text="@string/add_item"
                 android:id="@+id/btnAddItem"
                 android:onClick="onAddItem"/>
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:weightSum="100">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:onClick="inflateChooseTimeDialog"
-                android:text="@string/set_date"
-                android:textSize="20dp"
-                android:id="@+id/buttonSetDate"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/tvDateTime"
-                android:paddingTop="10dp"
-                android:paddingLeft="20dp"
-                android:textSize="25dp"
-                android:textStyle="bold"/>
         </LinearLayout>
 
 </LinearLayout>
