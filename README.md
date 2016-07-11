@@ -5,7 +5,7 @@ editing and deleting an existing item, and even marking an item as complete.
 
 Submitted by: **Yoav Gray**
 
-Time spent: **13** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -17,19 +17,16 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
+* [x] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
 * [x] Improved style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
 * [x] Added support for completion due dates for todo items (and display within listview item)
 * [x] Added support for selecting the priority of each todo item (and display in listview item)
 * [x] Used a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [x] Tweaked the style improving the UI / UX, play with colors, images or backgrounds
 
-The following **optional** features are not YET implemented:
-
-* [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
-
 The following **additional** features are implemented:
 
-* [x] Added a 'Complete' check box for each item to mark item as completed.
+* [x] Added a 'Complete' check box for each item to mark item as completed
 * [x] Set time and date for task is through a Dialog showing DatePicker and TimePicker
 * [x] Added support for Spanish from the OptionsMenu and Like/Dislike button to send a feedback email
 * [x] Added an AlertDialog before deleting task from list
@@ -37,15 +34,18 @@ The following **additional** features are implemented:
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:<br>
-<img src="http://i.imgur.com/h8KISOl.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
+<img src="http://i.imgur.com/SVgjwjN.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
 
 GIF created with [<a href="https://github.com/colinkeenan/silentcast">SilentCast</a>](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
 
 ## Notes
 
-A big challenge I encountered while building the app is understanding how I should successfully create
-an interaction between the ListView's TextView and CheckBox. Also, I couldn't understand, why OnItemClickListener
-did not fire after clicking the ListView item once I added the checkbox, but I managed to work around it with a lot
+A big challenge I encountered while building the app is understanding how I should successfully 
+create an interaction between the ListView's TextView and CheckBox. Also, I couldn't understand, 
+why OnItemClickListener did not fire after clicking the ListView item once I added the checkbox, but I managed to work around it with a lot
 of help from StackOverflow!
 
-I am submitting my work, but will continue working on extending the app while experiencing with more Android features!
+The application is now submitted and I hope you like it and the additional features. I spent a lot
+of time on it and learned a lot while doing it, so thanks for pushing me!
+
+Yoav Gray

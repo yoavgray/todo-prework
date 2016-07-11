@@ -9,76 +9,27 @@ import org.json.JSONObject;
 import java.util.Comparator;
 
 public class ListItem {
-
+    private long id;
+    private int priority;
     private String text;
     private boolean isChecked;
-    private int year, month, day, hour, minute, priority;
+    private String time, date;
 
-    public ListItem(String text, boolean isChecked, int year, int month, int day, int hour, int minute, int priority) {
+    public ListItem(long id, int priority, String text, boolean isChecked, String time, String date) {
+        this.id = id;
+        this.priority = priority;
         this.text = text;
         this.isChecked = isChecked;
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
-        this.priority = priority;
+        this.time = time;
+        this.date = date;
     }
 
-    public boolean isChecked() {
-        return isChecked;
+    public long getId() {
+        return id;
     }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getPriority() {
@@ -89,18 +40,48 @@ public class ListItem {
         this.priority = priority;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         JSONObject j = new JSONObject();
         try {
+            j.put("id",id);
+            j.put("priority",priority);
             j.put("text",text);
             j.put("isChecked",isChecked);
-            j.put("year",year);
-            j.put("month",month);
-            j.put("day",day);
-            j.put("hour",hour);
-            j.put("minute",minute);
-            j.put("priority",priority);
+            j.put("time",time);
+            j.put("date",date);
         } catch (JSONException e) {
             e.printStackTrace();
         }

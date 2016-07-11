@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Hacer? O No Hacer?</string>
+    <string name="complete">Terminado</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Bueno</string>
+    <string name="add_task">añadir una tarea</string>
+    <string name="add_item">añadir artículo</string>
+    <string name="time">Tiempo</string>
+    <string name="date">Fecha</string>
+    <string name="set_date">ajustar tiempo</string>
+    <string name="edit_task">Editar tarea:</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_like_dislike">Gustar/Disgustar</string>
+    <string name="send_mail">Enviar</string>
+    <string name="mail_from_user">Hola Yoav,\n\nRealmente me gustó/disgustó su aplicación porque (tu texto)\n\nSinceramente suyo,\nדקאTU NOMBRE</string>
+    <string name="set_spanish">Español</string>
+    <string name="set_english">Inglés</string>
+    <string name="set_hebrew">hebreo</string>
+    <string name="long_click">* Pulsación larga en una tarea eliminará de la lista de tareas</string>
+
+    <string-array name="priority_array">
+        <item>Bajo</item>
+        <item>Medio</item>
+        <item>Alto</item>
+        <item>Super</item>
+    </string-array>
+    <string name="dialog_delete_message">tareas eliminadas no podían ser restaurados!</string>
+    <string name="dialog_delete_title">Eliminar tarea?</string>
+    <string name="task_empty"> tarea está vacía!</string>
+    <string name="uncheck_task">Tarea esta terminada</string>
+
+</resources>

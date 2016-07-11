@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">לעשות? או לא לעשות?</string>
+    <string name="dialog_delete_message">לא תוכל לשחזר משימות שנמחקו!</string>
+    <string name="dialog_delete_title">למחוק משימה?</string>
+    <string name="complete">הושלם</string>
+    <string name="cancel">בטל</string>
+    <string name="ok">סבבה</string>
+    <string name="add_task">הוסף משימה</string>
+    <string name="add_item">הוסף משימה</string>
+    <string name="time">זמן</string>
+    <string name="date">תאריך</string>
+    <string name="set_date">ערוך זמן</string>
+    <string name="edit_task">ערוך משימה:</string>
+    <string name="action_settings">הגדרות</string>
+    <string name="send_mail">שלח</string>
+    <string name="mail_from_user">היי יואב,\n\n ממש אהבתי\לא אהבתי את האפליקציה שלך כי (השלם)\n\nשלך תמיד,\nהשם שלך</string>
+    <string name="action_like_dislike">אהבתי\לא אהבתי</string>
+    <string name="set_english">אנגלית</string>
+    <string name="set_spanish">ספרדית</string>
+    <string name="set_hebrew">עברית</string>
+    <string name="long_click">* לחיצה ארוכה על רשומה, תמחק את הרשומה מהרשימה</string>
+
+    <string-array name="priority_array">
+        <item>נמוך</item>
+        <item>בינוני</item>
+        <item>גבוה</item>
+        <item>סופר</item>
+    </string-array>
+    <string name="task_empty">המשימה ריקה!</string>
+    <string name="uncheck_task">המשימה הסתיימה</string>
+
+
+</resources>

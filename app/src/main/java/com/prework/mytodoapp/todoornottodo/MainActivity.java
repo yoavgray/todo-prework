@@ -3,6 +3,7 @@ package com.prework.mytodoapp.todoornottodo;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,20 +24,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.io.FileUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHOOSE_TIME = 1;
+    private static final String TASK_ID_FILE = "MyTaskIdFile";
+    private static long taskId = 0;
+
+    ListItemDataSource dataSource;
     List<ListItem> items;
-    List<String> itemsFromFile;
     TodoItemAdapter itemsAdapter;
     ListView lvItems;
     TextView tvCap;
@@ -48,7 +45,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        readItems();
+        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
+        taskId = settings.getLong("taskId", 0);
+        //Toast.makeText(this, "Read taskId from file. taskId = " + taskId, Toast.LENGTH_LONG).show();
+        dataSource = new ListItemDataSource(this);
+        dataSource.open();
+        items = dataSource.getAllItems();
+
         setupViews();
         setupListViewListener();
         ActionBar ab = getSupportActionBar();
@@ -57,11 +60,16 @@ public class MainActivity extends AppCompatActivity {
         ab.setDisplayShowTitleEnabled(false);
     }
 
-    //save data before leaving app
     @Override
     protected void onStop() {
         super.onStop();
-        writeItems();
+
+        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("taskId", taskId);
+
+        // Commit the edits!
+        editor.apply();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 ft.addToBackStack(null);
                 DialogFragment newFragment = LikeDislikeFragment.newInstance();
                 newFragment.show(getSupportFragmentManager(), "Dialog");
+                ft.commit();
                 return true;
 
             default:
@@ -135,9 +144,20 @@ public class MainActivity extends AppCompatActivity {
                 adb.setIcon(android.R.drawable.ic_dialog_alert);
                 adb.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        ListItem thisItem = items.get(position);
+                        dataSource.deleteListItem(thisItem);
                         items.remove(position);
+                        //Just to zero the taskId to give it more time to reach Integer.MAX
+                        //Yes, I have belief in this app :)
+                        if (items.size() == 0) {
+                            SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putLong("taskId", 0);
+
+                            // Commit the edits!
+                            editor.apply();
+                        }
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
                     } });
 
                 adb.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -169,32 +189,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQUEST_CODE_CHOOSE_TIME:
-                if (resultCode == RESULT_CANCELED) {
-                    etText.setText("");
-                } else {
-                    year = data.getIntExtra("year", 2016);
-                    month = data.getIntExtra("month", 7);
-                    day = data.getIntExtra("day", 4);
-                    hour = data.getIntExtra("hour", 7);
-                    minute = data.getIntExtra("minute", 30);
-
-                    String itemText = etText.getText().toString();
-                    //clean text field for the next task to be added
-                    etText.setText("");
-                    itemsAdapter.add(new ListItem(itemText, false, year, month, day, hour, minute, 0));
-                    //make sure to keep file updated
-                    writeItems();
-                }
-                break;
-        }
-    }
-
     public void onAddItem(View v) {
         etText = (EditText)findViewById(R.id.etText);
 
@@ -213,62 +207,54 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
     }
 
-    //read list from saved file
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            itemsFromFile = new ArrayList<>(FileUtils.readLines(todoFile));
-            items = new ArrayList<ListItem>();
-            //to save a list with a text value and a boolean value, I had to parse
-            //the text that looks like "ListItem{text='foo', isChecked=false}"
-            for (int i=0; i<itemsFromFile.size(); i++) {
-                String strFromFile = itemsFromFile.get(i);
-                JSONObject jo = new JSONObject(strFromFile);
 
-                String text = jo.getString("text");
-                boolean isChecked = jo.getBoolean("isChecked");
-                int year = jo.getInt("year");
-                int month = jo.getInt("month");
-                int day = jo.getInt("day");
-                int hour = jo.getInt("hour");
-                int minute = jo.getInt("minute");
-                int priority = jo.getInt("priority");
-                items.add(new ListItem(text, isChecked, year, month, day, hour, minute, priority));
-            }
-        } catch (IOException e) {
-            items = new ArrayList<ListItem>();
-        } catch (JSONException e) {
-            e.printStackTrace();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE_CHOOSE_TIME:
+                if (resultCode == RESULT_CANCELED) {
+                    etText.setText("");
+                } else {
+                    year = data.getIntExtra("year", 2016);
+                    month = data.getIntExtra("month", 7);
+                    day = data.getIntExtra("day", 4);
+                    hour = data.getIntExtra("hour", 7);
+                    minute = data.getIntExtra("minute", 30);
+
+                    String itemText = etText.getText().toString();
+                    //clean text field for the next task to be added
+                    etText.setText("");
+                    String time = hour + ":" + minute;
+                    String date = month + "/" + day + "/" + year;
+
+                    boolean result = dataSource.addListItem(taskId, 0, itemText, false, time, date);
+                    if (result == false) {
+                        Toast.makeText(this, "Error: Task was not added! Please try again", Toast.LENGTH_LONG).show();
+                    } else {
+                        //Toast.makeText(this, "Task added! Now taskId = " + taskId, Toast.LENGTH_LONG).show();
+                        itemsAdapter.add(new ListItem(taskId++, 0, itemText, false, time, date));
+                    }
+                }
+                break;
         }
     }
 
-    //write list to a txt file
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //set this new function just to have a public access to writeItems()
+    //set this new function just to have a public access to writeItemsFile()
     //through clicking on the checkbox, to save parameters
     public void notifyChange(View v) {
         itemsAdapter.notifyDataSetChanged();
-        writeItems();
     }
 
     //extracting values from EditTaskFragment dialog
     public void onUserSelectValue(String text, int position) {
         if (text != null) {
             //extracting changed task and position in the items ArrayList
-            items.get(position).setText(text);
+            ListItem thisItem = items.get(position);
+            dataSource.updateListItem(1, thisItem.getId(), 0, text, false);
+            thisItem.setText(text);
             itemsAdapter.notifyDataSetChanged();
-            //make sure to keep the file updated
-            writeItems();
         } else {
             Toast.makeText(getBaseContext(), "Task was not changed", Toast.LENGTH_SHORT).show();
         }

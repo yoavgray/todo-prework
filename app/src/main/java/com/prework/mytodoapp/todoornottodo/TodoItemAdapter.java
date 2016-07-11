@@ -24,6 +24,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
     final static int PRIORITY_HIGH = 2;
     final static int PRIORITY_SUPER = 3;
 
+    ListItemDataSource dataSource;
     Context context;
     int layoutResourceId;
     List<ListItem> data = null;
@@ -58,9 +59,9 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
         final ListItem todoItem = data.get(position);
         holder.tvText.setText(todoItem.getText());
-        String dateDisplay = todoItem.getMonth() + "/" + todoItem.getDay() + "/" + todoItem.getYear();
+        String dateDisplay = todoItem.getDate();
         holder.tvDate.setText(dateDisplay);
-        String timeDisplay = todoItem.getHour() + ":" + todoItem.getMinute();
+        String timeDisplay = todoItem.getTime();
         holder.tvTime.setText(timeDisplay);
         holder.cb.setChecked(todoItem.isChecked());
 
@@ -77,6 +78,8 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 todoItem.setPriority(position);
                 LinearLayout ll = (LinearLayout)parent.getParent();
+                dataSource = new ListItemDataSource(getContext());
+                dataSource.open();
                 switch (position) {
                     case PRIORITY_LOW:
                         ll.setBackgroundColor(Color.parseColor("#FFC9C9"));
@@ -92,6 +95,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                         break;
 
                 }
+                dataSource.updateListItem(0, todoItem.getId(), position, null, false);
             }
 
             @Override
@@ -113,15 +117,18 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
         holder.cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((CheckBox)v).isChecked()) {
-                    todoItem.setChecked(true);
-                    holder.spinner.setEnabled(false);
+                long id = todoItem.getId();
+                boolean isChecked = ((CheckBox)v).isChecked();
+
+                if (isChecked) {
                     holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
-                    todoItem.setChecked(false);
-                    holder.spinner.setEnabled(true);
                     holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                 }
+
+                dataSource.updateListItem(2, id, 0, null, isChecked);
+                todoItem.setChecked(isChecked);
+                holder.spinner.setEnabled(!isChecked);
             }
         });
 
@@ -130,8 +137,8 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
     static class ItemHolder
     {
-        CheckBox cb;
-        TextView tvText, tvDate, tvTime;
         Spinner spinner;
+        TextView tvText, tvDate, tvTime;
+        CheckBox cb;
     }
 }
