@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/todo-prework.iml" filepath="$PROJECT_DIR$/todo-prework.iml" />
       <module fileurl="file://$PROJECT_DIR$/todo-prework.iml" filepath="$PROJECT_DIR$/todo-prework.iml" />
     </modules>
   </component>

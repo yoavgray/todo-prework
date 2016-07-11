@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setupViews();
         setupListViewListener();
         ActionBar ab = getSupportActionBar();
-        Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo, null);
+        Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo_actionbar, null);
         ab.setBackgroundDrawable(d);
         ab.setDisplayShowTitleEnabled(false);
     }
