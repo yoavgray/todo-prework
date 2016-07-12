@@ -21,6 +21,7 @@
     <string name="long_click">* Long click on a task will remove task from list</string>
     <string name="task_empty">Task is empty!</string>
     <string name="uncheck_task">Uncheck \'Complete\' checkbox to edit task</string>
+    <string name="delete_completed">Delete Completed</string>
 
 
     <string-array name="priority_array">

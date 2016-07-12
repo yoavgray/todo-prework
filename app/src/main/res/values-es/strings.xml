@@ -28,5 +28,6 @@
     <string name="dialog_delete_title">Eliminar tarea?</string>
     <string name="task_empty"> tarea está vacía!</string>
     <string name="uncheck_task">Tarea esta terminada</string>
+    <string name="delete_completed">Eliminar Terminados</string>
 
 </resources>
