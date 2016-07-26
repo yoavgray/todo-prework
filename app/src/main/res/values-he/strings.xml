@@ -28,6 +28,6 @@
     </string-array>
     <string name="task_empty">המשימה ריקה!</string>
     <string name="uncheck_task">המשימה הסתיימה</string>
-
+    <string name="delete_completed">מחק מושלמות</string>
 
 </resources>

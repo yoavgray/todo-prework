@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
     ListItemDataSource dataSource;
     List<ListItem> items;
     TodoItemAdapter itemsAdapter;
+    Button btDeleteCompleted;
     ListView lvItems;
     TextView tvCap;
     EditText etText;
-    int year, month, day, hour, minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,11 +132,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
+        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, dataSource.getAllItems());
         tvCap = (TextView)findViewById(R.id.tvCap);
         tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(itemsAdapter);
+        btDeleteCompleted = (Button)findViewById(R.id.btDeleteCompleted);
+
+        btDeleteCompleted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                items = dataSource.deleteCompleted();
+                itemsAdapter.clear();
+                itemsAdapter.addAll(items);
+            }
+        });
     }
 
     private void setupListViewListener() {
@@ -151,16 +162,6 @@ public class MainActivity extends AppCompatActivity {
                         ListItem thisItem = items.get(position);
                         dataSource.deleteListItem(thisItem);
                         items.remove(position);
-                        //Just to zero the taskId to give it more time to reach Integer.MAX
-                        //Yes, I have belief in this app :)
-                        if (items.size() == 0) {
-                            SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
-                            SharedPreferences.Editor editor = settings.edit();
-                            editor.putLong("taskId", 0);
-
-                            // Commit the edits!
-                            editor.apply();
-                        }
                         itemsAdapter.notifyDataSetChanged();
                     } });
 
@@ -221,11 +222,11 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_CANCELED) {
                     etText.setText("");
                 } else {
-                    year = data.getIntExtra("year", 2016);
-                    month = data.getIntExtra("month", 7);
-                    day = data.getIntExtra("day", 4);
-                    hour = data.getIntExtra("hour", 7);
-                    minute = data.getIntExtra("minute", 30);
+                    int year = data.getIntExtra("year", 2016);
+                    int month = data.getIntExtra("month", 7);
+                    int day = data.getIntExtra("day", 4);
+                    int hour = data.getIntExtra("hour", 7);
+                    int minute = data.getIntExtra("minute", 30);
 
                     String itemText = etText.getText().toString();
                     //clean text field for the next task to be added

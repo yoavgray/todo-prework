@@ -58,6 +58,12 @@ public class ListItemDataSource {
                 + " = " + id, null);
     }
 
+    public List<ListItem> deleteCompleted() {
+        database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_IS_CHECKED
+                + " = " + 1, null);
+        return getAllItems();
+    }
+
     public int updateListItem(int changeParam, long id, int priority, String task, boolean isChecked) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues  contentValues = new ContentValues();

@@ -11,6 +11,21 @@
     android:weightSum="100"
     tools:context="com.prework.mytodoapp.todoornottodo.MainActivity">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp">
+        <Button
+            android:id="@+id/btDeleteCompleted"
+            android:text="@string/delete_completed"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"/>
+    </LinearLayout>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"

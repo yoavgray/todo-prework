@@ -37,6 +37,11 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
     }
 
     @Override
+    public ListItem getItem(int position) {
+        return data.get(position);
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
         final ItemHolder holder;
