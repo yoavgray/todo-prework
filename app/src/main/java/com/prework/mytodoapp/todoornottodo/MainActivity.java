@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the edits!
         editor.apply();
+
+        dataSource.close();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -228,8 +230,9 @@ public class MainActivity extends AppCompatActivity {
                     String itemText = etText.getText().toString();
                     //clean text field for the next task to be added
                     etText.setText("");
-                    String time = hour + ":" + minute;
-                    String date = month + "/" + day + "/" + year;
+                    String time = hour + ":" + ((minute < 10) ? "0" + minute : minute);
+                    String date = ((month < 10) ? "0" + month : month) + "/"
+                            + ((day < 10) ? "0" + day : day) + "/" + year;
 
                     boolean result = dataSource.addListItem(taskId, 0, itemText, false, time, date);
                     if (result == false) {
