@@ -19,6 +19,8 @@
         <activity
             android:name=".SetTimeActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
+        <receiver android:name=".TaskTimeReceiver" />
+        <service android:name=".RingtonePlayingService" />
     </application>
 
 </manifest>

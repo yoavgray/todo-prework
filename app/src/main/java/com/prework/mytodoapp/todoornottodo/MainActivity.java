@@ -1,14 +1,17 @@
 package com.prework.mytodoapp.todoornottodo;
 
+import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
@@ -20,13 +23,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,10 +43,11 @@ public class MainActivity extends AppCompatActivity {
     ListItemDataSource dataSource;
     List<ListItem> items;
     TodoItemAdapter itemsAdapter;
-    Button btDeleteCompleted;
     ListView lvItems;
     TextView tvCap;
     EditText etText;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this, "Read taskId from file. taskId = " + taskId, Toast.LENGTH_LONG).show();
         dataSource = new ListItemDataSource(this);
         dataSource.open();
-        items = dataSource.getAllItems();
+        items = new ArrayList<>();
+        dataSource.getAllItems(items);
 
         setupViews();
         setupListViewListener();
@@ -61,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
         Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo_actionbar, null);
         ab.setBackgroundDrawable(d);
         ab.setDisplayShowTitleEnabled(false);
+        //Change the color of the status bar above API21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.GREEN);
+        }
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
     @Override
@@ -132,21 +147,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, dataSource.getAllItems());
+        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
         tvCap = (TextView)findViewById(R.id.tvCap);
         tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(itemsAdapter);
-        btDeleteCompleted = (Button)findViewById(R.id.btDeleteCompleted);
-
-        btDeleteCompleted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                items = dataSource.deleteCompleted();
-                itemsAdapter.clear();
-                itemsAdapter.addAll(items);
-            }
-        });
     }
 
     private void setupListViewListener() {
@@ -160,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
                 adb.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         ListItem thisItem = items.get(position);
+                        Intent taskIntent = new Intent(MainActivity.this, TaskTimeReceiver.class);
+                        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, (int) thisItem.getId(), taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.cancel(pendingIntent);
                         dataSource.deleteListItem(thisItem);
                         items.remove(position);
                         itemsAdapter.notifyDataSetChanged();
@@ -239,8 +247,15 @@ public class MainActivity extends AppCompatActivity {
                     if (result == false) {
                         Toast.makeText(this, "Error: Task was not added! Please try again", Toast.LENGTH_LONG).show();
                     } else {
-                        //Toast.makeText(this, "Task added! Now taskId = " + taskId, Toast.LENGTH_LONG).show();
-                        itemsAdapter.add(new ListItem(taskId++, 0, itemText, false, time, date));
+                        items.add(new ListItem(taskId, 0, itemText, false, time, date));
+                        itemsAdapter.notifyDataSetChanged();
+                        Intent taskIntent = new Intent(this, TaskTimeReceiver.class);
+                        taskIntent.putExtra("task", itemText);
+                        taskIntent.putExtra("date", date);
+                        taskIntent.putExtra("time", time);
+                        pendingIntent = PendingIntent.getBroadcast(this, (int)taskId++, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        long timeInMs = data.getLongExtra("timeInMs", 1);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMs, pendingIntent);
                     }
                 }
                 break;

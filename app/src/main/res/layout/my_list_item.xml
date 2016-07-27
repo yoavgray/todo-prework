@@ -15,14 +15,14 @@
         android:focusableInTouchMode="false"/>
     <TextView
         android:id="@+id/tvListView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingStart="15dp"
         android:paddingLeft="15dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        android:textSize="26sp"
+        android:textAppearance="?android:textAppearanceMedium"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:fontFamily="monospace"

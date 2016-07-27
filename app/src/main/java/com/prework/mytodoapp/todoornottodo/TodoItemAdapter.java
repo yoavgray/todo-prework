@@ -87,16 +87,16 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                 dataSource.open();
                 switch (position) {
                     case PRIORITY_LOW:
-                        ll.setBackgroundColor(Color.parseColor("#FFC9C9"));
+                        ll.setBackgroundColor(Color.parseColor("#FFCDD2"));
                         break;
                     case PRIORITY_MEDIUM:
-                        ll.setBackgroundColor(Color.parseColor("#FD9B9B"));
+                        ll.setBackgroundColor(Color.parseColor("#EF9A9A"));
                         break;
                     case PRIORITY_HIGH:
-                        ll.setBackgroundColor(Color.parseColor("#FD5656"));
+                        ll.setBackgroundColor(Color.parseColor("#E57373"));
                         break;
                     case PRIORITY_SUPER:
-                        ll.setBackgroundColor(Color.parseColor("#FF0000"));
+                        ll.setBackgroundColor(Color.parseColor("#EF5350"));
                         break;
 
                 }

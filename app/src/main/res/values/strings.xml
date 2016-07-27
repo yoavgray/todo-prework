@@ -2,7 +2,7 @@
     <string name="app_name">To Do, Or Not To Do?</string>
     <string name="dialog_delete_message">Deleted tasks could not be restored!</string>
     <string name="dialog_delete_title">Delete task?</string>
-    <string name="complete">Completed</string>
+    <string name="complete">Done</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="add_task">Add a task</string>
@@ -22,7 +22,6 @@
     <string name="task_empty">Task is empty!</string>
     <string name="uncheck_task">Uncheck \'Complete\' checkbox to edit task</string>
     <string name="delete_completed">Delete Completed</string>
-
 
     <string-array name="priority_array">
         <item>Low</item>

@@ -58,12 +58,6 @@ public class ListItemDataSource {
                 + " = " + id, null);
     }
 
-    public List<ListItem> deleteCompleted() {
-        database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_IS_CHECKED
-                + " = " + 1, null);
-        return getAllItems();
-    }
-
     public int updateListItem(int changeParam, long id, int priority, String task, boolean isChecked) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues  contentValues = new ContentValues();
@@ -82,8 +76,9 @@ public class ListItemDataSource {
         return db.update(DatabaseHelper.TABLE_NAME, contentValues,DatabaseHelper.COLUMN_ID + " = " + id, null);
     }
 
-    public List<ListItem> getAllItems() {
-        List<ListItem> items = new ArrayList<>();
+    //I added a List as an argument because it was a mistake to instantiate
+    //it here.
+    public List<ListItem> getAllItems(List<ListItem> items) {
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_NAME,
                 allColumns, null, null, null, null, null);

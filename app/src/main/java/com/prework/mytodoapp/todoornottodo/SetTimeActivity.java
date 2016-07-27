@@ -52,7 +52,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         boolean validTime = true;
         Intent i = getIntent();
-        int day, month, year, hour, minute;
+        long day, month, year, hour, minute;
         day = dp.getDayOfMonth();
         month = dp.getMonth();
         year = dp.getYear();
@@ -65,12 +65,22 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         }
         switch (v.getId()) {
             case (R.id.buttonOkDialog):
+                //We're instantiating a Calendar instance to get the dsired time in milliseconds
+                Calendar timeChosen = Calendar.getInstance();
+                timeChosen.set(Calendar.YEAR, (int)year);
+                timeChosen.set(Calendar.MONTH, (int)month);
+                timeChosen.set(Calendar.DAY_OF_MONTH, (int)day);
+                timeChosen.set(Calendar.HOUR_OF_DAY, (int)hour);
+                timeChosen.set(Calendar.MINUTE, (int)minute);
+                long timeInMs = timeChosen.getTimeInMillis();
+
                 if (timeIsValid(year, month, day, hour, minute)) {
-                    i.putExtra("day", day);
-                    i.putExtra("month", month);
-                    i.putExtra("year", year);
-                    i.putExtra("hour", hour);
-                    i.putExtra("minute", minute);
+                    i.putExtra("day", (int)day);
+                    i.putExtra("month", (int)month);
+                    i.putExtra("year", (int)year);
+                    i.putExtra("hour", (int)hour);
+                    i.putExtra("minute", (int)minute);
+                    i.putExtra("timeInMs", timeInMs);
                     setResult(RESULT_OK, i);
                 } else {
                     Toast.makeText(SetTimeActivity.this, "Past date/time is invalid", Toast.LENGTH_SHORT).show();
@@ -88,10 +98,9 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private boolean timeIsValid(int chosenYear, int chosenMonth, int chosenDay, int chosenHour, int chosenMinute) {
-        boolean retValue = true;
+    private boolean timeIsValid(long chosenYear, long chosenMonth, long chosenDay, long chosenHour, long chosenMinute) {
+        boolean isValid = true;
         int currentHour, currentMinute, currentDay, currentMonth, currentYear;
-        long delayInMinutes;
         Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
         currentYear = calendar.get(Calendar.YEAR);
         currentMonth = calendar.get(Calendar.MONTH);
@@ -100,39 +109,35 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         currentMinute = calendar.get(Calendar.MINUTE);     // gets month number, NOTE this is zero based!
 
         if (chosenYear > currentYear) {
-              retValue = true;
+              isValid = true;
         } else if (chosenYear == currentYear) {
             if (chosenMonth > currentMonth) {
-                retValue = true;
+                isValid = true;
             } else if (chosenMonth == currentMonth) {
                 if (chosenDay > currentDay) {
-                    retValue = true;
+                    isValid = true;
                 } else if (chosenDay == currentDay) {
                     if (chosenHour > currentHour) {
-                        retValue = true;
+                        isValid = true;
                     } else if (chosenHour == currentHour) {
                         if (chosenMinute >= currentMinute) {
-                            retValue = true;
+                            isValid = true;
                         } else {
-                            retValue = false;
+                            isValid = false;
                         }
                     } else {
-                        retValue = false;
+                        isValid = false;
                     }
                 } else {
-                    retValue = false;
+                    isValid = false;
                 }
             } else {
-                retValue = false;
+                isValid = false;
             }
         } else {
-            retValue = false;
+            isValid = false;
         }
 
-        if (retValue) {
-            delayInMinutes = (chosenMonth - currentMonth) * 43829 + (chosenDay - currentDay) * 1440 + ((chosenHour - currentHour) * 60) + (chosenMinute - currentMinute);
-        }
-
-        return retValue;
+        return isValid;
     }
 }
