@@ -1,11 +1,10 @@
-# Pre-work - *To Do, Or Not To Do?*
+# Pre-work - *To Do? Or Not To Do?*
 
-**To Do, Or Not To Do?** is an android app that allows building a todo list and basic todo items management functionality including adding new items, 
-editing and deleting an existing item, and even marking an item as complete.
+**To Do? Or Not To Do?** is an android app that allows building a todo list and basic todo items management functionality including adding new items, editing and deleting an existing item, and even marking an item as complete.
 
 Submitted by: **Yoav Gray**
 
-Time spent: **25** hours spent in total
+Time spent: **27** hours spent in total
 
 ## User Stories
 
@@ -30,6 +29,8 @@ The following **additional** features are implemented:
 * [x] Set time and date for task is through a Dialog showing DatePicker and TimePicker
 * [x] Added support for Spanish from the OptionsMenu and Like/Dislike button to send a feedback email
 * [x] Added an AlertDialog before deleting task from list
+* [x] Used text and color to follow Android Material Design guidelines
+* [x] Added notifications and sound when task is due
 
 ## Video Walkthrough 
 
