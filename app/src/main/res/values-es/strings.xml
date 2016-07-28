@@ -29,5 +29,6 @@
     <string name="task_empty"> tarea está vacía!</string>
     <string name="uncheck_task">Tarea esta terminada</string>
     <string name="delete_completed">Eliminar Hechos</string>
+    <string name="required">Necesario</string>
 
 </resources>

@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/add_item"
                 android:id="@+id/btnAddItem"
-                android:onClick="onAddItem"/>
+                android:enabled="false"
+                android:onClick="inflateChooseTimeDialog"/>
         </LinearLayout>
 
 </LinearLayout>

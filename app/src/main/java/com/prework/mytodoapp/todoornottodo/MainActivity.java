@@ -11,13 +11,14 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.service.notification.StatusBarNotification;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     TodoItemAdapter itemsAdapter;
     ListView lvItems;
     TextView tvCap;
+    Button btAddTask;
     EditText etText;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
@@ -152,6 +155,30 @@ public class MainActivity extends AppCompatActivity {
         tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(itemsAdapter);
+        btAddTask = (Button) findViewById(R.id.btnAddItem);
+        etText = (EditText)findViewById(R.id.etText);
+        etText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    etText.setError(getText(R.string.required));
+                    btAddTask.setEnabled(false);
+                } else {
+                    etText.setError(null);
+                    btAddTask.setEnabled(true);
+                }
+            }
+        });
     }
 
     private void setupListViewListener() {
@@ -202,24 +229,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void onAddItem(View v) {
-        etText = (EditText)findViewById(R.id.etText);
-
-        if (etText.getText().toString().equals("")) {
-            Toast.makeText(this, R.string.task_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        inflateChooseTimeDialog();
-    }
-
     //just trying a different method - calling a function from onClick method in
     //button XML attributes
-    public void inflateChooseTimeDialog() {
+    public void inflateChooseTimeDialog(View v) {
         Intent i = new Intent(this, SetTimeActivity.class);
         startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

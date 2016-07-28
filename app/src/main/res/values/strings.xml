@@ -22,6 +22,7 @@
     <string name="task_empty">Task is empty!</string>
     <string name="uncheck_task">Uncheck \'Complete\' checkbox to edit task</string>
     <string name="delete_completed">Delete Completed</string>
+    <string name="required">Required</string>
 
     <string-array name="priority_array">
         <item>Low</item>
