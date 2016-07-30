@@ -6,11 +6,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 public class RingtonePlayingService extends Service {
     private NotificationManager mNM;
@@ -20,33 +19,33 @@ public class RingtonePlayingService extends Service {
     // We use it on Notification start, and to cancel it.
     private int callingId;
     private String task, date, time;
+    private long taskId;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        //Extracting values from coming Intent
         task = intent.getStringExtra("task");
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
+        taskId = intent.getLongExtra("taskId",0);
 
+        //Play music
         media = MediaPlayer.create(this, R.raw.errie);
         media.start();
 
         mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
-        // Display a notification about us starting.  We put an icon in the status bar.
+        // Display a notification.
         callingId = startId;
-        showNotification(callingId);
+        showNotification(taskId);
 
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        // Cancel the persistent notification.
+        //Cancel notification.
         mNM.cancel(callingId);
-
-        // Tell the user we stopped.
-        Toast.makeText(this, "Service ended", Toast.LENGTH_SHORT).show();
     }
 
     @Nullable
@@ -55,31 +54,39 @@ public class RingtonePlayingService extends Service {
         return null;
     }
 
-    /**
-     * Show a notification while this service is running.
-     * @param startId
-     */
-    private void showNotification(int startId) {
-        // In this sample, we'll use the same text for the ticker and the expanded notification
+    private void showNotification(long startId) {
+        //Text to be shown in the notification
         CharSequence text = "Reminder: " + task;
 
-        // The PendingIntent to launch our activity if the user selects this notification
+        //The PendingIntent to launch our activity if the user clicks on notification
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
+        //Intent to launch our desired activity and mark the notification as completed
+        Intent mainActivityIntent = new Intent(this,MainActivity.class);
+        mainActivityIntent.putExtra("done",true);
+        mainActivityIntent.putExtra("id",startId);
+        PendingIntent pendingIntentCompleted = PendingIntent.getActivity(this, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //name of action from manifest
+        Intent cancel = new Intent("com.prework.cancel");
+        cancel.putExtra("id", startId);
+        PendingIntent pendingIntentDismiss = PendingIntent.getBroadcast(this, 0, cancel, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Set the info for the views that show in the notification panel.
-        Notification notification = new Notification.Builder(this)
+        Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)  // the status icon
                 .setTicker(text)  // the status text
                 .setWhen(System.currentTimeMillis())  // the time stamp
                 .setContentTitle(date + " " + time)  // the label of the entry
                 .setContentText(text)  // the contents of the entry
+                .addAction(R.drawable.ic_clear_black_24dp, "Dismiss", pendingIntentDismiss)
+                .addAction(R.drawable.ic_done_black_24dp, "Done", pendingIntentCompleted)
                 .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                 .build();
 
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
         // Send the notification.
-        mNM.notify(startId, notification);
+        mNM.notify((int) startId, notification);
     }
 }

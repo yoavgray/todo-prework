@@ -32,6 +32,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         minute = c.get(Calendar.MINUTE);
 
         tp = (TimePicker)findViewById(R.id.timePicker);
+        assert tp != null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tp.setHour(hour);
             tp.setMinute(minute);
@@ -50,12 +51,12 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        boolean validTime = true;
         Intent i = getIntent();
         long day, month, year, hour, minute;
         day = dp.getDayOfMonth();
         month = dp.getMonth();
         year = dp.getYear();
+        //Have to do this to be safe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             minute = tp.getMinute();
             hour = tp.getHour();
@@ -63,18 +64,20 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
             minute = tp.getCurrentMinute();
             hour = tp.getCurrentHour();
         }
+
         switch (v.getId()) {
             case (R.id.buttonOkDialog):
-                //We're instantiating a Calendar instance to get the dsired time in milliseconds
+                //We're instantiating a Calendar instance to get the desired time in milliseconds
                 Calendar timeChosen = Calendar.getInstance();
                 timeChosen.set(Calendar.YEAR, (int)year);
                 timeChosen.set(Calendar.MONTH, (int)month);
                 timeChosen.set(Calendar.DAY_OF_MONTH, (int)day);
                 timeChosen.set(Calendar.HOUR_OF_DAY, (int)hour);
                 timeChosen.set(Calendar.MINUTE, (int)minute);
+                Calendar timeNow = GregorianCalendar.getInstance(); // creates a new calendar instance
                 long timeInMs = timeChosen.getTimeInMillis();
-
-                if (timeIsValid(year, month, day, hour, minute)) {
+                //Checking that user did not choose past time
+                if (timeChosen.compareTo(timeNow) >= 0) {
                     i.putExtra("day", (int)day);
                     i.putExtra("month", (int)month);
                     i.putExtra("year", (int)year);
@@ -82,62 +85,16 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
                     i.putExtra("minute", (int)minute);
                     i.putExtra("timeInMs", timeInMs);
                     setResult(RESULT_OK, i);
+                    finish();
                 } else {
                     Toast.makeText(SetTimeActivity.this, "Past date/time is invalid", Toast.LENGTH_SHORT).show();
-                    validTime = false;
                 }
                 break;
 
             case (R.id.buttonCancelDialog):
                 setResult(RESULT_CANCELED, i);
+                finish();
                 break;
         }
-
-        if (validTime == true) {
-            finish();
-        }
-    }
-
-    private boolean timeIsValid(long chosenYear, long chosenMonth, long chosenDay, long chosenHour, long chosenMinute) {
-        boolean isValid = true;
-        int currentHour, currentMinute, currentDay, currentMonth, currentYear;
-        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
-        currentYear = calendar.get(Calendar.YEAR);
-        currentMonth = calendar.get(Calendar.MONTH);
-        currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        currentHour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
-        currentMinute = calendar.get(Calendar.MINUTE);     // gets month number, NOTE this is zero based!
-
-        if (chosenYear > currentYear) {
-              isValid = true;
-        } else if (chosenYear == currentYear) {
-            if (chosenMonth > currentMonth) {
-                isValid = true;
-            } else if (chosenMonth == currentMonth) {
-                if (chosenDay > currentDay) {
-                    isValid = true;
-                } else if (chosenDay == currentDay) {
-                    if (chosenHour > currentHour) {
-                        isValid = true;
-                    } else if (chosenHour == currentHour) {
-                        if (chosenMinute >= currentMinute) {
-                            isValid = true;
-                        } else {
-                            isValid = false;
-                        }
-                    } else {
-                        isValid = false;
-                    }
-                } else {
-                    isValid = false;
-                }
-            } else {
-                isValid = false;
-            }
-        } else {
-            isValid = false;
-        }
-
-        return isValid;
     }
 }

@@ -9,9 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yoav on 09/07/16.
- */
 public class ListItemDataSource {
     private static final int UPDATE_PRIORITY = 0;
     private static final int UPDATE_TASK = 1;
@@ -45,11 +42,7 @@ public class ListItemDataSource {
         contentValues.put(DatabaseHelper.COLUMN_TIME, time);
         contentValues.put(DatabaseHelper.COLUMN_DATE, date);
         long result = database.insert(DatabaseHelper.TABLE_NAME, null, contentValues);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return result != -1;
     }
 
     public void deleteListItem(ListItem listItem) {
@@ -58,6 +51,7 @@ public class ListItemDataSource {
                 + " = " + id, null);
     }
 
+    //Update an existing db item by a different changing parameter
     public int updateListItem(int changeParam, long id, int priority, String task, boolean isChecked) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues  contentValues = new ContentValues();

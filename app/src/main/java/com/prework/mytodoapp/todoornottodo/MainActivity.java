@@ -40,6 +40,9 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHOOSE_TIME = 1;
     private static final String TASK_ID_FILE = "MyTaskIdFile";
+    private static final int UPDATE_PRIORITY = 0;
+    private static final int UPDATE_TASK = 1;
+    private static final int UPDATE_IS_CHECKED = 2;
     private static long taskId = 0;
 
     ListItemDataSource dataSource;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         setupListViewListener();
         ActionBar ab = getSupportActionBar();
         Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo_actionbar, null);
+        assert ab != null;
         ab.setBackgroundDrawable(d);
         ab.setDisplayShowTitleEnabled(false);
         //Change the color of the status bar above API21
@@ -79,6 +83,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        //This is for when the activity is started from a 'task due' notification. We want to
+        //update the list item and dismiss the notification
+        Intent startingIntent = getIntent();
+        if (startingIntent != null && startingIntent.getBooleanExtra("done", false)) {
+            long doneTaskId = startingIntent.getLongExtra("id",0);
+            for (ListItem listItem : items) {
+                if (listItem.getId() == doneTaskId) {
+                    listItem.setChecked(true);
+                    dataSource.updateListItem(UPDATE_IS_CHECKED, doneTaskId, 0, null, true);
+                    break;
+                }
+            }
+            itemsAdapter.notifyDataSetChanged();
+            //After we marked task as done, we would like to cancel the notification
+            Intent cancel = new Intent("com.prework.cancel");
+            cancel.putExtra("id", doneTaskId);
+            sendBroadcast(cancel);
+        }
     }
 
     @Override
@@ -152,8 +175,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupViews() {
         itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
         tvCap = (TextView)findViewById(R.id.tvCap);
+        assert tvCap != null;
         tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
+        assert lvItems != null;
         lvItems.setAdapter(itemsAdapter);
         btAddTask = (Button) findViewById(R.id.btnAddItem);
         etText = (EditText)findViewById(R.id.etText);
@@ -264,11 +289,16 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         items.add(new ListItem(taskId, 0, itemText, false, time, date));
                         itemsAdapter.notifyDataSetChanged();
+                        //Intent and data to start a broadcast and to eventualy present
+                        //data in the notification when task is due
                         Intent taskIntent = new Intent(this, TaskTimeReceiver.class);
                         taskIntent.putExtra("task", itemText);
                         taskIntent.putExtra("date", date);
                         taskIntent.putExtra("time", time);
-                        pendingIntent = PendingIntent.getBroadcast(this, (int)taskId++, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        taskIntent.putExtra("taskId",taskId);
+                        pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        taskId++;
+                        //Set alarm with the right offset
                         long timeInMs = data.getLongExtra("timeInMs", 1);
                         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMs, pendingIntent);
                     }
@@ -288,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         if (text != null) {
             //extracting changed task and position in the items ArrayList
             ListItem thisItem = items.get(position);
-            dataSource.updateListItem(1, thisItem.getId(), 0, text, false);
+            dataSource.updateListItem(UPDATE_TASK, thisItem.getId(), 0, text, false);
             thisItem.setText(text);
             itemsAdapter.notifyDataSetChanged();
         } else {

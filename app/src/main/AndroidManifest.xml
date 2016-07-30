@@ -20,6 +20,12 @@
             android:name=".SetTimeActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <receiver android:name=".TaskTimeReceiver" />
+        <receiver
+            android:name=".NotificationCancelReceiver" >
+            <intent-filter android:priority="999" >
+                <action android:name="com.prework.cancel" />
+            </intent-filter>
+        </receiver>
         <service android:name=".RingtonePlayingService" />
     </application>
 
