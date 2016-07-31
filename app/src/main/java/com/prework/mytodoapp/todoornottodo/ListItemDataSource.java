@@ -32,6 +32,10 @@ public class ListItemDataSource {
         dbHelper.close();
     }
 
+    public boolean isOpen() {
+        return database.isOpen();
+    }
+
     public boolean addListItem(long taskId, int priority, String task, boolean isChecked, String time, String date) {
         database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -46,6 +50,10 @@ public class ListItemDataSource {
     }
 
     public void deleteListItem(ListItem listItem) {
+        //If for any reason, the db closed
+        if (!this.isOpen()) {
+            this.open();
+        }
         long id = listItem.getId();
         database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_ID
                 + " = " + id, null);
@@ -53,6 +61,10 @@ public class ListItemDataSource {
 
     //Update an existing db item by a different changing parameter
     public int updateListItem(int changeParam, long id, int priority, String task, boolean isChecked) {
+        //If for any reason, the db closed
+        if (!this.isOpen()) {
+            this.open();
+        }
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues  contentValues = new ContentValues();
         switch (changeParam) {

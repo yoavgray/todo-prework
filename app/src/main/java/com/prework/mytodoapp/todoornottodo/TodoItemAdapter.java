@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import java.util.List;
 
 public class TodoItemAdapter extends ArrayAdapter<ListItem> {
@@ -88,15 +91,27 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                 switch (position) {
                     case PRIORITY_LOW:
                         ll.setBackgroundColor(Color.parseColor("#FFCDD2"));
+                        YoYo.with(Techniques.Swing)
+                                .duration(700)
+                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
                         break;
                     case PRIORITY_MEDIUM:
                         ll.setBackgroundColor(Color.parseColor("#EF9A9A"));
+                        YoYo.with(Techniques.FlipInX)
+                                .duration(700)
+                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
                         break;
                     case PRIORITY_HIGH:
                         ll.setBackgroundColor(Color.parseColor("#E57373"));
+                        YoYo.with(Techniques.Bounce)
+                                .duration(700)
+                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
                         break;
                     case PRIORITY_SUPER:
                         ll.setBackgroundColor(Color.parseColor("#EF5350"));
+                        YoYo.with(Techniques.Shake)
+                                .duration(700)
+                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
                         break;
 
                 }
@@ -117,7 +132,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        //OnCheckedChanged creates a bug while scrolling list. Views losetheir values (Checkboxes
+        //OnCheckedChanged creates a bug while scrolling list. Views lose their values (Checkboxes
         //are getting unchecked, etc)
         holder.cb.setOnClickListener(new View.OnClickListener() {
             @Override
