@@ -4,7 +4,7 @@
 
 Submitted by: **Yoav Gray**
 
-Time spent: **27** hours spent in total
+Time spent: **28** hours spent in total
 
 ## User Stories
 
@@ -31,6 +31,7 @@ The following **additional** features are implemented:
 * [x] Added an AlertDialog before deleting task from list
 * [x] Used text and color to follow Android Material Design guidelines
 * [x] Added notifications and sound when task is due
+* [x] Added the AndroidViewAnimations to create cool animations when changing priorities on todo item
 
 ## Video Walkthrough 
 
