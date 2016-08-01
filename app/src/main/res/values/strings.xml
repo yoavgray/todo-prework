@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">To Do, Or Not To Do?</string>
+    <string name="app_name">To Do? Or Not To Do?</string>
     <string name="dialog_delete_message">Deleted tasks could not be restored!</string>
     <string name="dialog_delete_title">Delete task?</string>
     <string name="complete">Done</string>
