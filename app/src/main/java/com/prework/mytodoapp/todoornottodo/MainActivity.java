@@ -1,5 +1,6 @@
 package com.prework.mytodoapp.todoornottodo;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int UPDATE_PRIORITY = 0;
     private static final int UPDATE_TASK = 1;
     private static final int UPDATE_IS_CHECKED = 2;
-    private static long taskId = 0;
+    private static long taskId;
 
     ListItemDataSource dataSource;
     List<ListItem> items;
@@ -105,17 +106,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
 
-        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
+        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong("taskId", taskId);
 
         // Commit the edits!
         editor.apply();
 
-        dataSource.close();
+        if (dataSource.isOpen()) {
+            dataSource.close();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong("taskId", taskId);
+
+        // Commit the edits!
+        editor.apply();
+
+        if (dataSource.isOpen()) {
+            dataSource.close();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
