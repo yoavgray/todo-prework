@@ -9,7 +9,7 @@ import android.content.Intent;
 public class NotificationCancelReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        long notificationId = intent.getLongExtra("id",0);
+        int notificationId = intent.getIntExtra("id",0);
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager nMgr = (NotificationManager) context.getSystemService(ns);
         nMgr.cancel((int) notificationId);

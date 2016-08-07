@@ -1,18 +1,14 @@
 package com.prework.mytodoapp.todoornottodo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -54,11 +50,11 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ItemHolder();
-            holder.spinner = (Spinner)row.findViewById(R.id.priority_spinner);
-            holder.tvText = (TextView)row.findViewById(R.id.tvListView);
-            holder.tvDate = (TextView)row.findViewById(R.id.tvDayDue);
-            holder.tvTime = (TextView)row.findViewById(R.id.tvTimeDue);
-            holder.cb = (CheckBox)row.findViewById(R.id.cbComplete);
+            holder.tvPriority   = (TextView)row.findViewById(R.id.tvPriority);
+            holder.tvText       = (TextView)row.findViewById(R.id.tvListView);
+            holder.tvDate       = (TextView)row.findViewById(R.id.tvDayDue);
+            holder.tvTime       = (TextView)row.findViewById(R.id.tvTimeDue);
+            holder.cb           = (CheckBox)row.findViewById(R.id.cbComplete);
 
             row.setTag(holder);
         } else {
@@ -72,63 +68,31 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
         String timeDisplay = todoItem.getTime();
         holder.tvTime.setText(timeDisplay);
         holder.cb.setChecked(todoItem.isChecked());
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.priority_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        holder.spinner.setAdapter(adapter);
-        holder.spinner.setSelection(todoItem.getPriority());
-        holder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                todoItem.setPriority(position);
-                LinearLayout ll = (LinearLayout)parent.getParent();
-                dataSource = new ListItemDataSource(getContext());
-                dataSource.open();
-                switch (position) {
-                    case PRIORITY_LOW:
-                        ll.setBackgroundColor(Color.parseColor("#FFCDD2"));
-                        YoYo.with(Techniques.Swing)
-                                .duration(700)
-                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
-                        break;
-                    case PRIORITY_MEDIUM:
-                        ll.setBackgroundColor(Color.parseColor("#EF9A9A"));
-                        YoYo.with(Techniques.FlipInX)
-                                .duration(700)
-                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
-                        break;
-                    case PRIORITY_HIGH:
-                        ll.setBackgroundColor(Color.parseColor("#E57373"));
-                        YoYo.with(Techniques.Bounce)
-                                .duration(700)
-                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
-                        break;
-                    case PRIORITY_SUPER:
-                        ll.setBackgroundColor(Color.parseColor("#EF5350"));
-                        YoYo.with(Techniques.Shake)
-                                .duration(700)
-                                .playOn(((LinearLayout) parent.getParent()).findViewById(R.id.tvListView));
-                        break;
-
-                }
-                dataSource.updateListItem(0, todoItem.getId(), position, null, false);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        int priority = todoItem.getPriority();
+        switch (priority) {
+            case PRIORITY_LOW:
+                row.setBackgroundColor(Color.parseColor("#FFCDD2"));
+                holder.tvPriority.setText(R.string.priority_low);
+                break;
+            case PRIORITY_MEDIUM:
+                holder.tvPriority.setText(R.string.priority_med);
+                row.setBackgroundColor(Color.parseColor("#EF9A9A"));
+                break;
+            case PRIORITY_HIGH:
+                holder.tvPriority.setText(R.string.priority_hi);
+                row.setBackgroundColor(Color.parseColor("#E57373"));
+                break;
+            case PRIORITY_SUPER:
+                holder.tvPriority.setText(R.string.priority_super);
+                row.setBackgroundColor(Color.parseColor("#EF5350"));
+                break;
+        }
 
         if (todoItem.isChecked()) {
-            holder.spinner.setEnabled(false);
+            holder.tvPriority.setEnabled(false);
             holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            holder.spinner.setEnabled(true);
+            holder.tvPriority.setEnabled(true);
             holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
@@ -137,7 +101,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
         holder.cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long id = todoItem.getId();
+                int id = todoItem.getId();
                 boolean isChecked = ((CheckBox)v).isChecked();
 
                 if (isChecked) {
@@ -146,9 +110,39 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                     holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                 }
 
-                dataSource.updateListItem(2, id, 0, null, isChecked);
+                int priority = todoItem.getPriority();
+                LinearLayout ll = ((LinearLayout) v.getParent().getParent());
+                switch (priority) {
+                    case PRIORITY_LOW:
+                        YoYo.with(Techniques.Swing)
+                                .duration(700)
+                                .playOn(ll.findViewById(R.id.tvListView));
+                        break;
+                    case PRIORITY_MEDIUM:
+                        YoYo.with(Techniques.FlipInX)
+                                .duration(700)
+                                .playOn(ll.findViewById(R.id.tvListView));
+                        break;
+                    case PRIORITY_HIGH:
+                        YoYo.with(Techniques.Bounce)
+                                .duration(700)
+                                .playOn(ll.findViewById(R.id.tvListView));
+                        break;
+                    case PRIORITY_SUPER:
+                        YoYo.with(Techniques.Shake)
+                                .duration(700)
+                                .playOn(ll.findViewById(R.id.tvListView));
+                        break;
+                }
+
+                if (dataSource == null) {
+                    dataSource = new ListItemDataSource(getContext());
+                    dataSource.open();
+                }
+                dataSource.updateListItem(2, id, 0, null, isChecked, "", "");
+                dataSource.close();
                 todoItem.setChecked(isChecked);
-                holder.spinner.setEnabled(!isChecked);
+                holder.tvPriority.setEnabled(!isChecked);
             }
         });
 
@@ -157,8 +151,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
     static class ItemHolder
     {
-        Spinner spinner;
-        TextView tvText, tvDate, tvTime;
+        TextView tvPriority, tvText, tvDate, tvTime;
         CheckBox cb;
     }
 }

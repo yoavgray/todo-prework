@@ -19,7 +19,7 @@ public class RingtonePlayingService extends Service {
     // We use it on Notification start, and to cancel it.
     private int callingId;
     private String task, date, time;
-    private long taskId;
+    private int taskId;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -27,7 +27,7 @@ public class RingtonePlayingService extends Service {
         task = intent.getStringExtra("task");
         date = intent.getStringExtra("date");
         time = intent.getStringExtra("time");
-        taskId = intent.getLongExtra("taskId",0);
+        taskId = intent.getIntExtra("taskId",0);
 
         //Play music
         media = MediaPlayer.create(this, R.raw.errie);
@@ -54,7 +54,7 @@ public class RingtonePlayingService extends Service {
         return null;
     }
 
-    private void showNotification(long startId) {
+    private void showNotification(int startId) {
         //Text to be shown in the notification
         CharSequence text = "Reminder: " + task;
 

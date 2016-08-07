@@ -7,7 +7,7 @@
     <string name="add_item">añadir artículo</string>
     <string name="time">Tiempo</string>
     <string name="date">Fecha</string>
-    <string name="set_date">ajustar tiempo</string>
+    <string name="set_date">ajustar fecha</string>
     <string name="edit_task">Editar tarea:</string>
     <string name="action_settings">Ajustes</string>
     <string name="action_like_dislike">Gustar/Disgustar</string>
@@ -17,18 +17,25 @@
     <string name="set_english">Inglés</string>
     <string name="set_hebrew">hebreo</string>
     <string name="long_click">* Pulsación larga en una tarea eliminará de la lista de tareas</string>
-
-    <string-array name="priority_array">
-        <item>Bajo</item>
-        <item>Medio</item>
-        <item>Alto</item>
-        <item>Super</item>
-    </string-array>
     <string name="dialog_delete_message">tareas eliminadas no podían ser restaurados!</string>
     <string name="dialog_delete_title">Eliminar tarea?</string>
     <string name="task_empty"> tarea está vacía!</string>
     <string name="uncheck_task">Tarea esta terminada</string>
     <string name="delete_completed">Eliminar Hechos</string>
     <string name="required">Necesario</string>
+    <string name="set_time">ajustar tiempo</string>
+    <string name="priority">Prioridad</string>
+    <string name="save">Guardar</string>
+    <string name="priority_hi">Alta</string>
+    <string name="priority_low">Baja</string>
+    <string name="priority_med">Media</string>
+    <string name="priority_super">Super</string>
+
+    <string-array name="priority_array">
+        <item>Baja</item>
+        <item>Media</item>
+        <item>Alta</item>
+        <item>Super</item>
+    </string-array>
 
 </resources>

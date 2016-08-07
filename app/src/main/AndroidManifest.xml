@@ -14,18 +14,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".SetTimeActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
+
         <receiver android:name=".TaskTimeReceiver" />
-        <receiver
-            android:name=".NotificationCancelReceiver" >
-            <intent-filter android:priority="999" >
+        <receiver android:name=".NotificationCancelReceiver">
+            <intent-filter android:priority="999">
                 <action android:name="com.prework.cancel" />
             </intent-filter>
         </receiver>
+
         <service android:name=".RingtonePlayingService" />
+
+        <activity
+            android:name=".ChooseTimeActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".ChooseDateActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>

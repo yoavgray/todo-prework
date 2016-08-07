@@ -18,9 +18,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,10 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,15 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int UPDATE_PRIORITY = 0;
     private static final int UPDATE_TASK = 1;
     private static final int UPDATE_IS_CHECKED = 2;
-    private static long taskId;
+    private static final int UPDATE_TIME_AND_DATE = 3;
+    private static int taskId;
 
     ListItemDataSource dataSource;
     List<ListItem> items;
     TodoItemAdapter itemsAdapter;
     ListView lvItems;
-    TextView tvCap;
-    Button btAddTask;
-    EditText etText;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
 
@@ -62,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
-        taskId = settings.getLong("taskId", 0);
+        taskId = settings.getInt("taskId", 0);
         //Toast.makeText(this, "Read taskId from file. taskId = " + taskId, Toast.LENGTH_LONG).show();
         dataSource = new ListItemDataSource(this);
         dataSource.open();
@@ -89,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
         //update the list item and dismiss the notification
         Intent startingIntent = getIntent();
         if (startingIntent != null && startingIntent.getBooleanExtra("done", false)) {
-            long doneTaskId = startingIntent.getLongExtra("id",0);
+            int doneTaskId = startingIntent.getIntExtra("id",0);
             for (ListItem listItem : items) {
                 if (listItem.getId() == doneTaskId) {
                     listItem.setChecked(true);
-                    dataSource.updateListItem(UPDATE_IS_CHECKED, doneTaskId, 0, null, true);
+                    dataSource.updateListItem(UPDATE_IS_CHECKED, doneTaskId, 0, null, true, "", "");
                     break;
                 }
             }
@@ -111,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong("taskId", taskId);
+        editor.putInt("taskId", taskId);
 
         // Commit the edits!
         editor.apply();
@@ -127,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putLong("taskId", taskId);
+        editor.putInt("taskId", taskId);
 
         // Commit the edits!
         editor.apply();
@@ -193,36 +187,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViews() {
         itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
-        tvCap = (TextView)findViewById(R.id.tvCap);
-        assert tvCap != null;
-        tvCap.setText(R.string.long_click);
         lvItems = (ListView)findViewById(R.id.lvItems);
         assert lvItems != null;
         lvItems.setAdapter(itemsAdapter);
-        btAddTask = (Button) findViewById(R.id.btnAddItem);
-        etText = (EditText)findViewById(R.id.etText);
-        etText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
-                    etText.setError(getText(R.string.required));
-                    btAddTask.setEnabled(false);
-                } else {
-                    etText.setError(null);
-                    btAddTask.setEnabled(true);
-                }
-            }
-        });
     }
 
     private void setupListViewListener() {
@@ -261,13 +228,15 @@ public class MainActivity extends AppCompatActivity {
                 if (items.get(position).isChecked()) {
                     Toast.makeText(getBaseContext(), R.string.uncheck_task, Toast.LENGTH_LONG).show();
                 } else {
-                    // Create and show the dialog.
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.addToBackStack(null);
-                    String text = items.get(position).getText();
-                    DialogFragment newFragment = EditTaskFragment.newInstance(text, position);
-                    newFragment.show(getSupportFragmentManager(), "Dialog");
-                    ft.commit();
+                    Intent i = new Intent(getBaseContext(), SetTimeActivity.class);
+                    ListItem thisItem = items.get(position);
+                    i.putExtra("new", false);
+                    i.putExtra("id", thisItem.getId());
+                    i.putExtra("task", thisItem.getText());
+                    i.putExtra("priority", thisItem.getPriority());
+                    i.putExtra("date", thisItem.getDate());
+                    i.putExtra("time", thisItem.getTime());
+                    startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
                 }
             }
         });
@@ -277,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
     //button XML attributes
     public void inflateChooseTimeDialog(View v) {
         Intent i = new Intent(this, SetTimeActivity.class);
+        i.putExtra("new", true);
         startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
     }
 
@@ -287,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_CHOOSE_TIME:
                 if (resultCode == RESULT_CANCELED) {
-                    etText.setText("");
+                    Log.d("MainActivity","User canceled task addition");
                 } else {
                     int year = data.getIntExtra("year", 2016);
                     int month = data.getIntExtra("month", 7);
@@ -295,32 +265,61 @@ public class MainActivity extends AppCompatActivity {
                     int hour = data.getIntExtra("hour", 7);
                     int minute = data.getIntExtra("minute", 30);
 
-                    String itemText = etText.getText().toString();
+                    String itemText = data.getStringExtra("task");
+                    int priority = data.getIntExtra("priority", 0);
                     //clean text field for the next task to be added
-                    etText.setText("");
                     String time = hour + ":" + ((minute < 10) ? "0" + minute : minute);
                     String date = ((month < 10) ? "0" + month : month) + "/"
                             + ((day < 10) ? "0" + day : day) + "/" + year;
 
-                    boolean result = dataSource.addListItem(taskId, 0, itemText, false, time, date);
-                    if (result == false) {
-                        Toast.makeText(this, "Error: Task was not added! Please try again", Toast.LENGTH_LONG).show();
+                    Intent taskIntent = new Intent(this, TaskTimeReceiver.class);
+                    boolean isTaskNew = data.getBooleanExtra("new", true);
+                    if (isTaskNew) {
+                        boolean result = dataSource.addListItem(taskId, priority, itemText, false, time, date);
+                        if (result == false) {
+                            Toast.makeText(this, "Error: Task was not added! Please try again", Toast.LENGTH_LONG).show();
+                        } else {
+                            items.add(new ListItem(taskId, priority, itemText, false, time, date));
+                            itemsAdapter.notifyDataSetChanged();
+                            //Intent and data to start a broadcast and to eventually present
+                            //data in the notification when task is due
+
+                            taskIntent.putExtra("task", itemText);
+                            taskIntent.putExtra("date", date);
+                            taskIntent.putExtra("time", time);
+                            taskIntent.putExtra("priority", priority);
+                            taskIntent.putExtra("taskId",taskId);
+                            pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            taskId++;
+                            //Set alarm with the right offset
+                            long timeInMs = data.getLongExtra("timeInMs", 1);
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMs, pendingIntent);
+                        }
                     } else {
-                        items.add(new ListItem(taskId, 0, itemText, false, time, date));
+                        int id = data.getIntExtra("id", 0);
+                        dataSource.updateListItem(UPDATE_PRIORITY,      id, priority, "", false, "", "");
+                        dataSource.updateListItem(UPDATE_TASK,          id, 0, itemText, false, "", "");
+                        dataSource.updateListItem(UPDATE_TIME_AND_DATE, id, 0, "", false, time, date);
+                        for (ListItem thisItem : items) {
+                            if (thisItem.getId() == id) {
+                                thisItem.setText(itemText);
+                                thisItem.setPriority(priority);
+                                thisItem.setDate(date);
+                                thisItem.setTime(time);
+                            }
+                        }
                         itemsAdapter.notifyDataSetChanged();
-                        //Intent and data to start a broadcast and to eventualy present
-                        //data in the notification when task is due
-                        Intent taskIntent = new Intent(this, TaskTimeReceiver.class);
                         taskIntent.putExtra("task", itemText);
                         taskIntent.putExtra("date", date);
                         taskIntent.putExtra("time", time);
-                        taskIntent.putExtra("taskId",taskId);
-                        pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        taskId++;
-                        //Set alarm with the right offset
+                        taskIntent.putExtra("priority", priority);
+                        taskIntent.putExtra("taskId", id);
+                        pendingIntent = PendingIntent.getBroadcast(this, id, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.cancel(pendingIntent);
                         long timeInMs = data.getLongExtra("timeInMs", 1);
                         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMs, pendingIntent);
                     }
+
                 }
                 break;
         }
@@ -337,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
         if (text != null) {
             //extracting changed task and position in the items ArrayList
             ListItem thisItem = items.get(position);
-            dataSource.updateListItem(UPDATE_TASK, thisItem.getId(), 0, text, false);
+            dataSource.updateListItem(UPDATE_TASK, thisItem.getId(), 0, text, false, "", "");
             thisItem.setText(text);
             itemsAdapter.notifyDataSetChanged();
         } else {

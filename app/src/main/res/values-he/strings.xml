@@ -9,7 +9,7 @@
     <string name="add_item">הוסף משימה</string>
     <string name="time">זמן</string>
     <string name="date">תאריך</string>
-    <string name="set_date">ערוך זמן</string>
+    <string name="set_date">ערוך תאריך</string>
     <string name="edit_task">ערוך משימה:</string>
     <string name="action_settings">הגדרות</string>
     <string name="send_mail">שלח</string>
@@ -19,16 +19,16 @@
     <string name="set_spanish">ספרדית</string>
     <string name="set_hebrew">עברית</string>
     <string name="long_click">* לחיצה ארוכה על רשומה, תמחק את הרשומה מהרשימה</string>
-
-    <string-array name="priority_array">
-        <item>נמוך</item>
-        <item>בינוני</item>
-        <item>גבוה</item>
-        <item>סופר</item>
-    </string-array>
+    <string name="priority_super">סופר</string>
+    <string name="priority_med">בינונית</string>
+    <string name="priority_low">נמוכה</string>
+    <string name="priority_hi">גבוהה</string>
+    <string name="required">חובה</string>
+    <string name="save">שמור</string>
+    <string name="priority">עדיפות</string>
+    <string name="delete_completed">מחק משימות שהושלמו</string>
+    <string name="set_time">קבע זמן</string>
     <string name="task_empty">המשימה ריקה!</string>
-    <string name="uncheck_task">המשימה הסתיימה</string>
-    <string name="delete_completed">מחק מושלמות</string>
-    <string name="required">דרוש</string>
+    <string name="uncheck_task">הסר משימה מ\'מושלמות\' כדי לערוך</string>
 
 </resources>

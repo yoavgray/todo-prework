@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import java.util.Comparator;
 
 public class ListItem {
-    private long id;
+    private int id;
     private int priority;
     private String text;
     private boolean isChecked;
     private String time, date;
 
-    public ListItem(long id, int priority, String text, boolean isChecked, String time, String date) {
+    public ListItem(int id, int priority, String text, boolean isChecked, String time, String date) {
         this.id = id;
         this.priority = priority;
         this.text = text;
@@ -24,11 +24,11 @@ public class ListItem {
         this.date = date;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

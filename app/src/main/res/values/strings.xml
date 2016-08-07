@@ -9,7 +9,8 @@
     <string name="add_item">Add Item</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
-    <string name="set_date">Set Time</string>
+    <string name="set_time">Set Time</string>
+    <string name="set_date">Set Date</string>
     <string name="edit_task">Edit Task:</string>
     <string name="action_settings">Settings</string>
     <string name="action_like_dislike">Like/Dislike</string>
@@ -23,6 +24,12 @@
     <string name="uncheck_task">Uncheck \'Complete\' checkbox to edit task</string>
     <string name="delete_completed">Delete Completed</string>
     <string name="required">Required</string>
+    <string name="save">Save</string>
+    <string name="priority">Priority</string>
+    <string name="priority_low">Low</string>
+    <string name="priority_med">Medium</string>
+    <string name="priority_hi">High</string>
+    <string name="priority_super">Super</string>
 
     <string-array name="priority_array">
         <item>Low</item>

@@ -2,30 +2,104 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView"
-    android:layout_width="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_width="300dp"
     android:layout_height="fill_parent">
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="10">
 
-        <DatePicker
-            android:id="@+id/datePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-        </DatePicker>
-
-        <TimePicker
-            android:id="@+id/timePicker"
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </TimePicker>
+            android:layout_height="wrap_content"
+            android:id="@+id/etTask"
+            android:hint="Set task"
+            android:inputType="textCapSentences"
+            android:layout_marginBottom="8dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:weightSum="10">
+            <TextView
+                android:id="@+id/tvTimeChosen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="@android:color/holo_blue_bright"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_weight="5"/>
+            <Button
+                android:id="@+id/btSetTime"
+                android:text="@string/set_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_weight="5"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10">
+            <TextView
+                android:id="@+id/tvDateChosen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="@android:color/holo_blue_bright"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_weight="5"/>
+            <Button
+                android:id="@+id/btSetDate"
+                android:text="@string/set_date"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_weight="5"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10">
+            <TextView
+                android:id="@+id/tvPriority"
+                android:text="@string/priority"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:textColor="@android:color/holo_blue_bright"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:layout_weight="5"/>
+            <Spinner
+                android:id="@+id/priority_spinner_edit_task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_weight="5"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1">
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/buttonOkDialog"
+                android:enabled="false"
                 android:text="@string/ok"/>
         </LinearLayout>
 

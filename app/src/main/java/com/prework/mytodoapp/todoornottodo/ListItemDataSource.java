@@ -13,6 +13,8 @@ public class ListItemDataSource {
     private static final int UPDATE_PRIORITY = 0;
     private static final int UPDATE_TASK = 1;
     private static final int UPDATE_IS_CHECKED = 2;
+    private static final int UPDATE_TIME_AND_DATE = 3;
+
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
     private String[] allColumns = { DatabaseHelper.COLUMN_ID,
@@ -36,7 +38,7 @@ public class ListItemDataSource {
         return database.isOpen();
     }
 
-    public boolean addListItem(long taskId, int priority, String task, boolean isChecked, String time, String date) {
+    public boolean addListItem(int taskId, int priority, String task, boolean isChecked, String time, String date) {
         database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseHelper.COLUMN_ID, taskId);
@@ -54,13 +56,13 @@ public class ListItemDataSource {
         if (!this.isOpen()) {
             this.open();
         }
-        long id = listItem.getId();
+        int id = listItem.getId();
         database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_ID
                 + " = " + id, null);
     }
 
     //Update an existing db item by a different changing parameter
-    public int updateListItem(int changeParam, long id, int priority, String task, boolean isChecked) {
+    public int updateListItem(int changeParam, int id, int priority, String task, boolean isChecked, String time, String date) {
         //If for any reason, the db closed
         if (!this.isOpen()) {
             this.open();
@@ -76,6 +78,10 @@ public class ListItemDataSource {
                 break;
             case UPDATE_IS_CHECKED:
                 contentValues.put(DatabaseHelper.COLUMN_IS_CHECKED, isChecked);
+                break;
+            case UPDATE_TIME_AND_DATE:
+                contentValues.put(DatabaseHelper.COLUMN_TIME, time);
+                contentValues.put(DatabaseHelper.COLUMN_DATE, date);
                 break;
         }
 
