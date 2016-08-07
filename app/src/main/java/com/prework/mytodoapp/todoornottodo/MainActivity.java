@@ -283,7 +283,6 @@ public class MainActivity extends AppCompatActivity {
                             itemsAdapter.notifyDataSetChanged();
                             //Intent and data to start a broadcast and to eventually present
                             //data in the notification when task is due
-
                             taskIntent.putExtra("task", itemText);
                             taskIntent.putExtra("date", date);
                             taskIntent.putExtra("time", time);

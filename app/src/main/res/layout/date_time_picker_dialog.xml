@@ -29,13 +29,9 @@
             android:weightSum="10">
             <TextView
                 android:id="@+id/tvTimeChosen"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
-                android:textColor="@android:color/holo_blue_bright"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold"
+                style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Button
                 android:id="@+id/btSetTime"
@@ -53,13 +49,9 @@
             android:weightSum="10">
             <TextView
                 android:id="@+id/tvDateChosen"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
-                android:textColor="@android:color/holo_blue_bright"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold"
+                style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Button
                 android:id="@+id/btSetDate"
@@ -78,13 +70,9 @@
             <TextView
                 android:id="@+id/tvPriority"
                 android:text="@string/priority"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:paddingStart="8dp"
                 android:paddingLeft="8dp"
-                android:textColor="@android:color/holo_blue_bright"
-                android:layout_gravity="center_vertical"
-                android:textStyle="bold"
+                style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Spinner
                 android:id="@+id/priority_spinner_edit_task"

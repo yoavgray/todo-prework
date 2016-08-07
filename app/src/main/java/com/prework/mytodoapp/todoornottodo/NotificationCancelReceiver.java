@@ -12,6 +12,6 @@ public class NotificationCancelReceiver extends BroadcastReceiver {
         int notificationId = intent.getIntExtra("id",0);
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager nMgr = (NotificationManager) context.getSystemService(ns);
-        nMgr.cancel((int) notificationId);
+        nMgr.cancel(notificationId);
     }
 }

@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 public class RingtonePlayingService extends Service {
     private NotificationManager mNM;
@@ -63,14 +62,11 @@ public class RingtonePlayingService extends Service {
                 new Intent(this, MainActivity.class), 0);
         //Intent to launch our desired activity and mark the notification as completed
         Intent mainActivityIntent = new Intent(this,MainActivity.class);
+        //To differentiate between to notifications
+        mainActivityIntent.setAction("" + startId);
         mainActivityIntent.putExtra("done",true);
         mainActivityIntent.putExtra("id",startId);
         PendingIntent pendingIntentCompleted = PendingIntent.getActivity(this, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //name of action from manifest
-        Intent cancel = new Intent("com.prework.cancel");
-        cancel.putExtra("id", startId);
-        PendingIntent pendingIntentDismiss = PendingIntent.getBroadcast(this, 0, cancel, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Set the info for the views that show in the notification panel.
         Notification notification = new NotificationCompat.Builder(this)
@@ -79,7 +75,6 @@ public class RingtonePlayingService extends Service {
                 .setWhen(System.currentTimeMillis())  // the time stamp
                 .setContentTitle(date + " " + time)  // the label of the entry
                 .setContentText(text)  // the contents of the entry
-                .addAction(R.drawable.ic_clear_black_24dp, "Dismiss", pendingIntentDismiss)
                 .addAction(R.drawable.ic_done_black_24dp, "Done", pendingIntentCompleted)
                 .setContentIntent(contentIntent)  // The intent to send when the entry is clicked
                 .build();
@@ -87,6 +82,6 @@ public class RingtonePlayingService extends Service {
         notification.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
         // Send the notification.
-        mNM.notify((int) startId, notification);
+        mNM.notify(startId, notification);
     }
 }

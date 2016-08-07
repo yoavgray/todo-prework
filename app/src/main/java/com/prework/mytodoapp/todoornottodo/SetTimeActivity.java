@@ -139,7 +139,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Calendar c = Calendar.getInstance();
             year = c.get(Calendar.YEAR);
-            month = c.get(Calendar.MONTH);
+            month = c.get(Calendar.MONTH) + 1;
             day = c.get(Calendar.DAY_OF_MONTH);
             hour = c.get(Calendar.HOUR_OF_DAY);
             minute = c.get(Calendar.MINUTE);
@@ -172,7 +172,8 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
                 //We're instantiating a Calendar instance to get the desired time in milliseconds
                 Calendar timeChosen = Calendar.getInstance();
                 timeChosen.set(Calendar.YEAR, year);
-                timeChosen.set(Calendar.MONTH, month);
+                //The months start from 0 so we need to adjust
+                timeChosen.set(Calendar.MONTH, month - 1);
                 timeChosen.set(Calendar.DAY_OF_MONTH, day);
                 timeChosen.set(Calendar.HOUR_OF_DAY, hour);
                 timeChosen.set(Calendar.MINUTE, minute);
