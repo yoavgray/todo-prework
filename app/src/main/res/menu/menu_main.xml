@@ -16,10 +16,8 @@
                     android:title="@string/set_english" />
                 <item android:id="@+id/set_spanish"
                     android:title="@string/set_spanish" />
-                <!-- Device should support hebrew for this to be shown
                 <item android:id="@+id/set_hebrew"
                     android:title="@string/set_hebrew" />
-                 -->
             </menu>
     </item>
 

@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -78,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            NetworkInfo.DetailedState ds = networkInfo.getDetailedState();
+            String extraInfo = networkInfo.getExtraInfo();
+            Toast.makeText(this,"Yay! Apparently, your connected to " + extraInfo.substring(1,extraInfo.length()-1) + " network!",Toast.LENGTH_LONG).show();
+        }
 
         //This is for when the activity is started from a 'task due' notification. We want to
         //update the list item and dismiss the notification
@@ -161,14 +174,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-            /* Device should support hebrew letters for this to be shown
+            //Device should support hebrew letters for this to be shown
             case R.id.set_hebrew:
                 conf.locale = new Locale("he".toLowerCase());
                 res.updateConfiguration(conf, dm);
                 finish();
                 startActivity(intent);
                 return true;
-            */
 
             case R.id.action_like_dislike:
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -204,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         ListItem thisItem = items.get(position);
                         Intent taskIntent = new Intent(MainActivity.this, TaskTimeReceiver.class);
-                        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, (int) thisItem.getId(), taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, thisItem.getId(), taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         alarmManager.cancel(pendingIntent);
                         dataSource.deleteListItem(thisItem);
                         items.remove(position);

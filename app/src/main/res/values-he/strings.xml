@@ -31,4 +31,10 @@
     <string name="task_empty">המשימה ריקה!</string>
     <string name="uncheck_task">הסר משימה מ\'מושלמות\' כדי לערוך</string>
 
+    <string-array name="priority_array">
+        <item>נמוכה</item>
+        <item>בינונית</item>
+        <item>גבוהה</item>
+        <item>סופר</item>
+    </string-array>
 </resources>
