@@ -4,7 +4,7 @@
 
 Submitted by: **Yoav Gray**
 
-Time spent: **28** hours spent in total
+Time spent: **30** hours spent in total
 
 ## User Stories
 
@@ -20,7 +20,7 @@ The following **optional** features are implemented:
 * [x] Improved style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
 * [x] Added support for completion due dates for todo items (and display within listview item)
 * [x] Added support for selecting the priority of each todo item (and display in listview item)
-* [x] Used a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
+* [x] Used a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for sending an email to the app author (myself)
 * [x] Tweaked the style improving the UI / UX, play with colors, images or backgrounds
 
 The following **additional** features are implemented:
@@ -30,13 +30,13 @@ The following **additional** features are implemented:
 * [x] Added support for Spanish from the OptionsMenu and Like/Dislike button to send a feedback email
 * [x] Added an AlertDialog before deleting task from list
 * [x] Used text and color to follow Android Material Design guidelines
-* [x] Added notifications and sound when task is due
-* [x] Added the AndroidViewAnimations to create cool animations when changing priorities on todo item
+* [x] Added notifications and sound when task is due and 'Done' action button to notifications
+* [x] Added the AndroidViewAnimations to create cool animations when checking a task as completed
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:<br>
-<img src="http://i.imgur.com/SVgjwjN.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
+<img src="http://i.imgur.com/R6vquAL.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
 
 GIF created with [<a href="https://github.com/colinkeenan/silentcast">SilentCast</a>](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
 
