@@ -4,7 +4,7 @@
 
 Submitted by: **Yoav Gray**
 
-Time spent: **30** hours spent in total
+Time spent: **35** hours spent in total
 
 ## User Stories
 
@@ -32,11 +32,12 @@ The following **additional** features are implemented:
 * [x] Used text and color to follow Android Material Design guidelines
 * [x] Added notifications and sound when task is due and 'Done' action button to notifications
 * [x] Added the AndroidViewAnimations to create cool animations when checking a task as completed
+* [x] Added ability to export tasks to user's calendar
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:<br>
-<img src="http://i.imgur.com/R6vquAL.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
+<img src="http://i.giphy.com/3oz8xNtCk1emGH4HDi.gif" title="Video Walkthrough" alt="Video Walkthrough"/>
 
 GIF created with [<a href="https://github.com/colinkeenan/silentcast">SilentCast</a>](https://github.com/colinkeenan/silentcast) on [Ubuntu 14.04].
 
