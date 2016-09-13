@@ -1,14 +1,10 @@
 package com.prework.mytodoapp.todoornottodo;
 
-import android.widget.CheckBox;
-import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Comparator;
-
 public class ListItem {
+    private boolean isShown;
     private int id;
     private int priority;
     private String text;
@@ -16,6 +12,7 @@ public class ListItem {
     private String time, date;
 
     public ListItem(int id, int priority, String text, boolean isChecked, String time, String date) {
+        this.isShown = false;
         this.id = id;
         this.priority = priority;
         this.text = text;
@@ -70,6 +67,14 @@ public class ListItem {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isShown() {
+        return isShown;
+    }
+
+    public void setShown(boolean shown) {
+        isShown = shown;
     }
 
     @Override

@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         if (networkInfo != null && networkInfo.isConnected()) {
             NetworkInfo.DetailedState ds = networkInfo.getDetailedState();
             String extraInfo = networkInfo.getExtraInfo();
-            Toast.makeText(this,"Yay! Apparently, your connected to " + extraInfo.substring(1,extraInfo.length()-1) + " network!",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Yay! Apparently, you're connected to " + extraInfo.substring(1,extraInfo.length()-1) + " network!",Toast.LENGTH_LONG).show();
         }
 
         //This is for when the activity is started from a 'task due' notification. We want to
@@ -237,26 +237,15 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (items.get(position).isChecked()) {
-                    Toast.makeText(getBaseContext(), R.string.uncheck_task, Toast.LENGTH_LONG).show();
-                } else {
-                    Intent i = new Intent(getBaseContext(), SetTimeActivity.class);
-                    ListItem thisItem = items.get(position);
-                    i.putExtra("new", false);
-                    i.putExtra("id", thisItem.getId());
-                    i.putExtra("task", thisItem.getText());
-                    i.putExtra("priority", thisItem.getPriority());
-                    i.putExtra("date", thisItem.getDate());
-                    i.putExtra("time", thisItem.getTime());
-                    startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
-                }
+                items.get(position).setShown(!items.get(position).isShown());
+                itemsAdapter.notifyDataSetChanged();
             }
         });
     }
 
     //just trying a different method - calling a function from onClick method in
     //button XML attributes
-    public void inflateChooseTimeDialog(View v) {
+    public void addTask(View v) {
         Intent i = new Intent(this, SetTimeActivity.class);
         i.putExtra("new", true);
         startActivityForResult(i, REQUEST_CODE_CHOOSE_TIME);
@@ -288,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                     boolean isTaskNew = data.getBooleanExtra("new", true);
                     if (isTaskNew) {
                         boolean result = dataSource.addListItem(taskId, priority, itemText, false, time, date);
-                        if (result == false) {
+                        if (!result) {
                             Toast.makeText(this, "Error: Task was not added! Please try again", Toast.LENGTH_LONG).show();
                         } else {
                             items.add(new ListItem(taskId, priority, itemText, false, time, date));
@@ -300,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                             taskIntent.putExtra("time", time);
                             taskIntent.putExtra("priority", priority);
                             taskIntent.putExtra("taskId",taskId);
-                            pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            pendingIntent = PendingIntent.getBroadcast(this, taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                             taskId++;
                             //Set alarm with the right offset
                             long timeInMs = data.getLongExtra("timeInMs", 1);
