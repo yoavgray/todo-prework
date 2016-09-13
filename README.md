@@ -25,6 +25,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
+* [x] **Published app on Google Play Store!**
 * [x] Added a 'Complete' check box for each item to mark item as completed
 * [x] Set time and date for task is through a Dialog showing DatePicker and TimePicker
 * [x] Added support for Spanish from the OptionsMenu and Like/Dislike button to send a feedback email
