@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.prework.mytodoapp.todoornottodo.R;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -34,7 +36,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.date_time_picker_dialog);
+        setContentView(R.layout.activity_set_time);
 
         callingIntent = getIntent();
         isTaskNew = callingIntent.getBooleanExtra("new", true);

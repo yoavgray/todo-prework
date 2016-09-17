@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.adapters;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:background="#FA3232">
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/iv_splash"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/splash_imageview_height"
         android:layout_gravity="center_vertical"
         android:src="@drawable/logo"
+        android:contentDescription="@string/app_name"
         android:layout_centerVertical="true" />
 </RelativeLayout>

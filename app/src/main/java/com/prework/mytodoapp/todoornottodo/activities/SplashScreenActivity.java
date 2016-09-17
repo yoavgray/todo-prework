@@ -1,10 +1,12 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.activities;
 
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
+
+import com.prework.mytodoapp.todoornottodo.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -13,7 +15,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getSupportActionBar().hide();
-        setContentView(R.layout.splash);
+        setContentView(R.layout.activity_splash);
         //display the logo during 3 seconds,
         new CountDownTimer(3000,1000){
             @Override

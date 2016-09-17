@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.adapters;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -22,6 +22,10 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.prework.mytodoapp.todoornottodo.data.ListItemDataSource;
+import com.prework.mytodoapp.todoornottodo.R;
+import com.prework.mytodoapp.todoornottodo.receivers.TaskTimeReceiver;
+import com.prework.mytodoapp.todoornottodo.activities.SetTimeActivity;
 
 import java.util.Calendar;
 import java.util.List;
@@ -61,16 +65,16 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ItemHolder();
-            holder.tvPriority           = (TextView)row.findViewById(R.id.tvPriority);
-            holder.tvText               = (TextView)row.findViewById(R.id.tvListView);
-            holder.tvDate               = (TextView)row.findViewById(R.id.tvDayDue);
-            holder.tvTime               = (TextView)row.findViewById(R.id.tvTimeDue);
-            holder.cb                   = (CheckBox)row.findViewById(R.id.cbComplete);
-            holder.fabEdit              = (FloatingActionButton)row.findViewById(R.id.fabEdit);
-            holder.fabDelete            = (FloatingActionButton)row.findViewById(R.id.fabDelete);
-            holder.fabExport            = (FloatingActionButton)row.findViewById(R.id.fabExport);
-            holder.barrier              = row.findViewById(R.id.listItemVerticalBarrier);
-            holder.bottomLinearLayout   = (LinearLayout)row.findViewById(R.id.LinearLayoutListItemBottom);
+            holder.tvPriority           = (TextView)row.findViewById(R.id.tv_priority);
+            holder.tvText               = (TextView)row.findViewById(R.id.tv_list_view);
+            holder.tvDate               = (TextView)row.findViewById(R.id.tv_day_due);
+            holder.tvTime               = (TextView)row.findViewById(R.id.tv_time_due);
+            holder.cb                   = (CheckBox)row.findViewById(R.id.cb_complete);
+            holder.fabEdit              = (FloatingActionButton)row.findViewById(R.id.fab_edit);
+            holder.fabDelete            = (FloatingActionButton)row.findViewById(R.id.fab_delete);
+            holder.fabExport            = (FloatingActionButton)row.findViewById(R.id.fab_export);
+            holder.barrier              = row.findViewById(R.id.listItem_vertical_barrier);
+            holder.bottomLinearLayout   = (LinearLayout)row.findViewById(R.id.ll_listitem_bottom);
 
             row.setTag(holder);
         } else {
@@ -134,22 +138,22 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                     case PRIORITY_LOW:
                         YoYo.with(Techniques.Swing)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tvListView));
+                                .playOn(ll.findViewById(R.id.tv_list_view));
                         break;
                     case PRIORITY_MEDIUM:
                         YoYo.with(Techniques.FlipInX)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tvListView));
+                                .playOn(ll.findViewById(R.id.tv_list_view));
                         break;
                     case PRIORITY_HIGH:
                         YoYo.with(Techniques.Bounce)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tvListView));
+                                .playOn(ll.findViewById(R.id.tv_list_view));
                         break;
                     case PRIORITY_SUPER:
                         YoYo.with(Techniques.Shake)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tvListView));
+                                .playOn(ll.findViewById(R.id.tv_list_view));
                         break;
                 }
 

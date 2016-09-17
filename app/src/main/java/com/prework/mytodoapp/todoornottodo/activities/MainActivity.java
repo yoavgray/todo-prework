@@ -1,10 +1,9 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,10 +11,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
@@ -34,6 +31,13 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.prework.mytodoapp.todoornottodo.adapters.ListItem;
+import com.prework.mytodoapp.todoornottodo.data.ListItemDataSource;
+import com.prework.mytodoapp.todoornottodo.R;
+import com.prework.mytodoapp.todoornottodo.receivers.TaskTimeReceiver;
+import com.prework.mytodoapp.todoornottodo.adapters.TodoItemAdapter;
+import com.prework.mytodoapp.todoornottodo.fragments.LikeDislikeFragment;
 
 import java.util.ArrayList;
 import java.util.List;

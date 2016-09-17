@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:lines="15"
-        android:gravity="top|left"
+        android:gravity="top|start"
         android:maxLines="15"
         android:scrollbars="vertical"
         android:text="@string/mail_from_user"
-        android:id="@+id/etEditMail" />
+        android:id="@+id/et_edit_mail" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,19 +25,19 @@
         style="?android:attr/buttonBarStyle"
         android:orientation="horizontal">
         <Button
-            android:layout_width="200dp"
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:text="@string/cancel"
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/buttonCancelSendMail"/>
+            android:id="@+id/bt_cancel_send_mail"/>
         <Button
-            android:layout_width="200dp"
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:text="@string/send_mail"
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/buttonSendMail"/>
+            android:id="@+id/bt_send_mail" />
     </LinearLayout>
 
 </LinearLayout>

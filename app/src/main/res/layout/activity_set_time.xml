@@ -9,7 +9,7 @@
     android:layout_width="300dp"
     android:layout_height="fill_parent">
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/ll_set_time_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/etTask"
-            android:hint="Set task"
+            android:hint="@string/add_task"
             android:inputType="textCapSentences"
             android:layout_marginBottom="8dp"/>
 
@@ -29,8 +29,8 @@
             android:weightSum="10">
             <TextView
                 android:id="@+id/tvTimeChosen"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
+                android:paddingStart="@dimen/dialog_textview_padding"
+                android:paddingLeft="@dimen/dialog_textview_padding"
                 style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Button
@@ -49,8 +49,8 @@
             android:weightSum="10">
             <TextView
                 android:id="@+id/tvDateChosen"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
+                android:paddingStart="@dimen/dialog_textview_padding"
+                android:paddingLeft="@dimen/dialog_textview_padding"
                 style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Button
@@ -68,18 +68,18 @@
             android:layout_height="wrap_content"
             android:weightSum="10">
             <TextView
-                android:id="@+id/tvPriority"
+                android:id="@+id/tv_priority"
                 android:text="@string/priority"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
+                android:paddingStart="@dimen/dialog_textview_padding"
+                android:paddingLeft="@dimen/dialog_textview_padding"
                 style="@style/EditTaskText"
                 android:layout_weight="5"/>
             <Spinner
                 android:id="@+id/priority_spinner_edit_task"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
+                android:paddingTop="@dimen/spinner_vertical_padding"
+                android:paddingBottom="@dimen/spinner_vertical_padding"
                 android:layout_weight="5"/>
         </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 
+import com.prework.mytodoapp.todoornottodo.R;
+
+
 public class ChooseDateActivity extends AppCompatActivity implements View.OnClickListener {
     DatePicker dp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.date_picker_layout);
+        setContentView(R.layout.dialog_date_picker);
 
         dp = (DatePicker) findViewById(R.id.datePicker);
 

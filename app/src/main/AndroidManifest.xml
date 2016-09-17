@@ -11,31 +11,31 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".activities.MainActivity" />
         <activity
-            android:name=".SetTimeActivity"
+            android:name=".activities.SetTimeActivity"
             android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity
+            android:name=".activities.ChooseTimeActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+        <activity android:name=".activities.ChooseDateActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
 
-        <receiver android:name=".TaskTimeReceiver" />
-        <receiver android:name=".NotificationCancelReceiver">
+        <receiver android:name=".receivers.TaskTimeReceiver" />
+        <receiver android:name=".receivers.NotificationCancelReceiver">
             <intent-filter android:priority="999">
                 <action android:name="com.prework.cancel" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".RingtonePlayingService" />
+        <service android:name=".services.RingtonePlayingService" />
 
-        <activity
-            android:name=".ChooseTimeActivity"
-            android:theme="@style/Theme.AppCompat.Dialog" />
-        <activity android:name=".ChooseDateActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
     </application>
 
 </manifest>

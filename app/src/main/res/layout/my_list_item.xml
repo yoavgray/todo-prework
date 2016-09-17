@@ -2,26 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants">
     <LinearLayout
-        android:id="@+id/infoLinearLayout"
+        android:id="@+id/ll_info"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:weightSum="10">
         <TextView
-            android:id="@+id/tvPriority"
+            android:id="@+id/tv_priority"
             android:layout_width="0dp"
-            android:maxWidth="10pt"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingStart="6dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingEnd="6dp"
+            android:paddingStart="@dimen/listitem_horizontal_padding"
+            android:paddingLeft="@dimen/listitem_horizontal_padding"
+            android:paddingRight="@dimen/listitem_horizontal_padding"
+            android:paddingEnd="@dimen/listitem_horizontal_padding"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:textAppearance="?android:textAppearanceMedium"
@@ -34,12 +32,12 @@
             android:layout_height="match_parent"
             android:background="#c0c0c0"/>
         <TextView
-            android:id="@+id/tvListView"
+            android:id="@+id/tv_list_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp"
+            android:paddingStart="@dimen/lisitem_textview_padding"
+            android:paddingLeft="@dimen/lisitem_textview_padding"
             android:gravity="center_vertical"
             android:textStyle="bold|italic"
             android:textAppearance="?android:textAppearanceMedium"
@@ -53,91 +51,53 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvDayDue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingStart="8dp"
+                android:id="@+id/tv_day_due"
                 android:paddingBottom="5dp"
-                android:gravity="center_vertical"
                 android:text="@string/date"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="monospace"/>
+                style="@style/date_time_style"/>
             <TextView
-                android:id="@+id/tvTimeDue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingStart="8dp"
-                android:gravity="center_vertical"
+                android:id="@+id/tv_time_due"
                 android:text="@string/time"
-                android:textStyle="bold"
-                android:textSize="12sp"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="monospace"/>
+                style="@style/date_time_style"/>
 
             <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/complete"
-            android:clickable="true"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:onClick="notifyChange"
-            android:id="@+id/cbComplete"/>
+                android:id="@+id/cb_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/complete"
+                android:clickable="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="notifyChange" />
         </LinearLayout>
     </LinearLayout>
     <View
-        android:id="@+id/listItemVerticalBarrier"
+        android:id="@+id/listItem_vertical_barrier"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/views_vertical_margin"
         android:layout_marginTop="2dp"
         android:visibility="gone"
-        android:background="#c0c0c0"/>
+        android:background="@color/colorBarrier"/>
     <LinearLayout
-        android:id="@+id/LinearLayoutListItemBottom"
+        android:id="@+id/ll_listitem_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
         android:orientation="horizontal">
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabEdit"
+            android:id="@+id/fab_edit"
             android:src="@drawable/ic_mode_edit_white_36dp"
-            app:fabSize="normal"
-            app:elevation="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:tint="@android:color/white"/>
+            style="@style/fab_style"/>
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabDelete"
+            android:id="@+id/fab_delete"
             android:src="@drawable/ic_delete_white_36dp"
-            app:fabSize="normal"
-            app:elevation="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:tint="@android:color/white"/>
+            style="@style/fab_style"/>
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabExport"
+            android:id="@+id/fab_export"
             android:src="@drawable/ic_date_range_white_36dp"
-            app:fabSize="normal"
-            app:elevation="0dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:tint="@android:color/white"/>
+            style="@style/fab_style"/>
     </LinearLayout>
 
 </LinearLayout>

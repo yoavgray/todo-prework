@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
+import com.prework.mytodoapp.todoornottodo.adapters.ListItem;
+
 import java.util.List;
 
 public class ListItemDataSource {

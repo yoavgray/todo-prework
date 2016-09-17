@@ -1,20 +1,9 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.data;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import org.w3c.dom.Comment;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by yoav on 08/07/16.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION        = 1;
     public static final String DATABASE_NAME        = "todo_list.db";

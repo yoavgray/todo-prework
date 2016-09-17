@@ -1,4 +1,4 @@
-package com.prework.mytodoapp.todoornottodo;
+package com.prework.mytodoapp.todoornottodo.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.prework.mytodoapp.todoornottodo.activities.MainActivity;
+import com.prework.mytodoapp.todoornottodo.R;
+
 public class LikeDislikeFragment extends DialogFragment {
     private static final int USER_TEXT_STARTING_INDEX = 20;
 
@@ -15,8 +18,7 @@ public class LikeDislikeFragment extends DialogFragment {
 
     //instantiate a new dialog fragment and save arguments
     public static LikeDislikeFragment newInstance() {
-        LikeDislikeFragment fragment = new LikeDislikeFragment();
-        return fragment;
+        return new LikeDislikeFragment();
     }
 
     @Override
@@ -34,9 +36,9 @@ public class LikeDislikeFragment extends DialogFragment {
     }
 
     private void setupViews(View rootView) {
-        etEditMail = (EditText)rootView.findViewById(R.id.etEditMail);
-        Button sendMail = (Button) rootView.findViewById(R.id.buttonSendMail);
-        Button cancel = (Button) rootView.findViewById(R.id.buttonCancelSendMail);
+        etEditMail = (EditText)rootView.findViewById(R.id.et_edit_mail);
+        Button sendMail = (Button) rootView.findViewById(R.id.bt_send_mail);
+        Button cancel = (Button) rootView.findViewById(R.id.bt_cancel_send_mail);
 
         //sending the relevant values back to MainActivity
         sendMail.setOnClickListener(new View.OnClickListener() {

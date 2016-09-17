@@ -3,7 +3,7 @@
     <string name="complete">Hecho</string>
     <string name="cancel">Cancelar</string>
     <string name="ok">Bueno</string>
-    <string name="add_task">añadir una tarea</string>
+    <string name="add_task">añadir tarea</string>
     <string name="add_item">añadir artículo</string>
     <string name="time">Tiempo</string>
     <string name="date">Fecha</string>
