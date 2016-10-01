@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
         taskId = settings.getInt("taskId", 0);
-        //Toast.makeText(this, "Read taskId from file. taskId = " + taskId, Toast.LENGTH_LONG).show();
         dataSource = new ListItemDataSource(this);
         dataSource.open();
         items = new ArrayList<>();
@@ -87,14 +86,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            NetworkInfo.DetailedState ds = networkInfo.getDetailedState();
-            String extraInfo = networkInfo.getExtraInfo();
-            Toast.makeText(this,"Yay! Apparently, you're connected to " + extraInfo.substring(1,extraInfo.length()-1) + " network!",Toast.LENGTH_LONG).show();
-        }
 
         //This is for when the activity is started from a 'task due' notification. We want to
         //update the list item and dismiss the notification

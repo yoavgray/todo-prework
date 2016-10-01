@@ -65,7 +65,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ItemHolder();
-            holder.tvPriority           = (TextView)row.findViewById(R.id.tv_priority);
+            holder.tvPriority           = (TextView)row.findViewById(R.id.textview_priority);
             holder.tvText               = (TextView)row.findViewById(R.id.tv_list_view);
             holder.tvDate               = (TextView)row.findViewById(R.id.tv_day_due);
             holder.tvTime               = (TextView)row.findViewById(R.id.tv_time_due);
