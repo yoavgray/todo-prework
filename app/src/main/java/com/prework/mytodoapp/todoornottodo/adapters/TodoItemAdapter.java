@@ -84,6 +84,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
         final ListItem todoItem = data.get(position);
         holder.barrier.setVisibility(todoItem.isShown() ? View.VISIBLE : View.GONE);
         holder.bottomLinearLayout.setVisibility(todoItem.isShown() ? View.VISIBLE : View.GONE);
+        holder.tvText.setMaxLines(holder.barrier.getVisibility() == View.VISIBLE ? 3 : 1);
         holder.tvText.setText(todoItem.getText());
         String dateDisplay = todoItem.getDate();
         holder.tvDate.setText(dateDisplay);
