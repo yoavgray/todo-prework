@@ -4,44 +4,40 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.prework.mytodoapp.todoornottodo.R;
 
-public class ChooseTimeActivity extends AppCompatActivity implements View.OnClickListener {
-    TimePicker tp;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class ChooseTimeActivity extends AppCompatActivity {
+    @BindView(R.id.timePicker) TimePicker tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_time_picker);
+        ButterKnife.bind(this);
 
-        tp = (TimePicker) findViewById(R.id.timePicker);
         tp.setIs24HourView(true);
-
-        Button buttonSaveTime = (Button) findViewById(R.id.btSaveTime);
-        buttonSaveTime.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
-        //Just to make sure it's nothing about the TimePicker
-        if (view.getId() == R.id.btSaveTime) {
-            Intent i = getIntent();
-            int hour, minute;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                hour = tp.getHour();
-                minute = tp.getMinute();
-            } else {
-                hour = tp.getCurrentHour();
-                minute = tp.getCurrentMinute();
-            }
-            i.putExtra("hour", hour);
-            i.putExtra("minute", minute);
-            setResult(RESULT_OK, i);
-            finish();
+    @OnClick(R.id.btSaveTime)
+    public void saveTime() {
+        Intent i = getIntent();
+        int hour, minute;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hour = tp.getHour();
+            minute = tp.getMinute();
+        } else {
+            hour = tp.getCurrentHour();
+            minute = tp.getCurrentMinute();
         }
+        i.putExtra("hour", hour);
+        i.putExtra("minute", minute);
+        setResult(RESULT_OK, i);
+        finish();
     }
 }

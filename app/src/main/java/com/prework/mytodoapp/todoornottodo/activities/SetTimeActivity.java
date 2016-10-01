@@ -118,7 +118,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         btCancel.setOnClickListener(this);
         btSetDate = (Button) findViewById(R.id.btSetDate);
         btSetDate.setOnClickListener(this);
-        btSetTime = (Button) findViewById(R.id.btSetTime);
+        btSetTime = (Button) findViewById(R.id.button_set_time);
         btSetTime.setOnClickListener(this);
     }
 
@@ -160,7 +160,7 @@ public class SetTimeActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent;
 
         switch (v.getId()) {
-            case (R.id.btSetTime):
+            case (R.id.button_set_time):
                 intent = new Intent(this, ChooseTimeActivity.class);
                 startActivityForResult(intent,CHOOSE_TIME_REQUEST_CODE);
                 break;
