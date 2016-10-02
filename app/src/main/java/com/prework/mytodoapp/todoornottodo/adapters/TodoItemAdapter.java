@@ -30,6 +30,9 @@ import com.prework.mytodoapp.todoornottodo.activities.SetTimeActivity;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
     final static int REQUEST_CODE_CHOOSE_TIME = 1;
@@ -63,74 +66,65 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             row = inflater.inflate(layoutResourceId, parent, false);
-
-            holder = new ItemHolder();
-            holder.tvPriority           = (TextView)row.findViewById(R.id.textview_priority);
-            holder.tvText               = (TextView)row.findViewById(R.id.tv_list_view);
-            holder.tvDate               = (TextView)row.findViewById(R.id.tv_day_due);
-            holder.tvTime               = (TextView)row.findViewById(R.id.tv_time_due);
-            holder.cb                   = (CheckBox)row.findViewById(R.id.cb_complete);
-            holder.fabEdit              = (FloatingActionButton)row.findViewById(R.id.fab_edit);
-            holder.fabDelete            = (FloatingActionButton)row.findViewById(R.id.fab_delete);
-            holder.fabExport            = (FloatingActionButton)row.findViewById(R.id.fab_export);
-            holder.barrier              = row.findViewById(R.id.listItem_vertical_barrier);
-            holder.bottomLinearLayout   = (LinearLayout)row.findViewById(R.id.ll_listitem_bottom);
-
+            holder = new ItemHolder(row);
             row.setTag(holder);
         } else {
             holder = (ItemHolder)row.getTag();
         }
 
         final ListItem todoItem = data.get(position);
-        holder.barrier.setVisibility(todoItem.isShown() ? View.VISIBLE : View.GONE);
         holder.bottomLinearLayout.setVisibility(todoItem.isShown() ? View.VISIBLE : View.GONE);
-        holder.tvText.setMaxLines(holder.barrier.getVisibility() == View.VISIBLE ? 3 : 1);
-        holder.tvText.setText(todoItem.getText());
+        holder.taskNameTextView.setMaxLines(holder.bottomLinearLayout.getVisibility() == View.VISIBLE ? 3 : 1);
+        holder.taskNameTextView.setText(todoItem.getText());
         String dateDisplay = todoItem.getDate();
-        holder.tvDate.setText(dateDisplay);
+        holder.dateDueTextView.setText(dateDisplay);
         String timeDisplay = todoItem.getTime();
-        holder.tvTime.setText(timeDisplay);
-        holder.cb.setChecked(todoItem.isChecked());
+        holder.timeDueTextView.setText(timeDisplay);
+        holder.completeCheckBox.setChecked(todoItem.isChecked());
         int priority = todoItem.getPriority();
         switch (priority) {
             case PRIORITY_LOW:
                 row.setBackgroundColor(Color.parseColor("#FFCDD2"));
-                holder.tvPriority.setText(R.string.priority_low);
+                holder.priorityTextView.setText(R.string.priority_low);
                 break;
             case PRIORITY_MEDIUM:
-                holder.tvPriority.setText(R.string.priority_med);
+                holder.priorityTextView.setText(R.string.priority_med);
                 row.setBackgroundColor(Color.parseColor("#EF9A9A"));
                 break;
             case PRIORITY_HIGH:
-                holder.tvPriority.setText(R.string.priority_hi);
+                holder.priorityTextView.setText(R.string.priority_hi);
                 row.setBackgroundColor(Color.parseColor("#E57373"));
                 break;
             case PRIORITY_SUPER:
-                holder.tvPriority.setText(R.string.priority_super);
+                holder.priorityTextView.setText(R.string.priority_super);
                 row.setBackgroundColor(Color.parseColor("#EF5350"));
                 break;
         }
 
         if (todoItem.isChecked()) {
-            holder.tvPriority.setEnabled(false);
-            holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.priorityTextView.setEnabled(false);
+            holder.taskNameTextView.setPaintFlags(
+                    holder.taskNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            holder.tvPriority.setEnabled(true);
-            holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.priorityTextView.setEnabled(true);
+            holder.taskNameTextView.setPaintFlags(
+                    holder.taskNameTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         //OnCheckedChanged creates a bug while scrolling list. Views lose their values (Checkboxes
         //are getting unchecked, etc)
-        holder.cb.setOnClickListener(new View.OnClickListener() {
+        holder.completeCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int id = todoItem.getId();
                 boolean isChecked = ((CheckBox)v).isChecked();
 
                 if (isChecked) {
-                    holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.taskNameTextView.setPaintFlags(
+                            holder.taskNameTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
-                    holder.tvText.setPaintFlags(holder.tvText.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                    holder.taskNameTextView.setPaintFlags(
+                            holder.taskNameTextView.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                 }
 
                 int priority = todoItem.getPriority();
@@ -139,22 +133,22 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                     case PRIORITY_LOW:
                         YoYo.with(Techniques.Swing)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tv_list_view));
+                                .playOn(ll.findViewById(R.id.text_view_name));
                         break;
                     case PRIORITY_MEDIUM:
                         YoYo.with(Techniques.FlipInX)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tv_list_view));
+                                .playOn(ll.findViewById(R.id.text_view_name));
                         break;
                     case PRIORITY_HIGH:
                         YoYo.with(Techniques.Bounce)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tv_list_view));
+                                .playOn(ll.findViewById(R.id.text_view_name));
                         break;
                     case PRIORITY_SUPER:
                         YoYo.with(Techniques.Shake)
                                 .duration(700)
-                                .playOn(ll.findViewById(R.id.tv_list_view));
+                                .playOn(ll.findViewById(R.id.text_view_name));
                         break;
                 }
 
@@ -165,14 +159,14 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
                 dataSource.updateListItem(2, id, 0, null, isChecked, "", "");
                 dataSource.close();
                 todoItem.setChecked(isChecked);
-                holder.tvPriority.setEnabled(!isChecked);
+                holder.priorityTextView.setEnabled(!isChecked);
             }
         });
 
-        holder.fabEdit.setOnClickListener(new View.OnClickListener() {
+        holder.editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isChecked = holder.cb.isChecked();
+                boolean isChecked = holder.completeCheckBox.isChecked();
                 if (isChecked) {
                     Toast.makeText(context, R.string.uncheck_task, Toast.LENGTH_LONG).show();
                 } else {
@@ -188,7 +182,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             }
         });
 
-        holder.fabDelete.setOnClickListener(new View.OnClickListener() {
+        holder.deleteFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ListItem todoItem = data.get(position);
@@ -221,7 +215,7 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
             }
         });
 
-        holder.fabExport.setOnClickListener(new View.OnClickListener() {
+        holder.exportFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final ListItem todoItem = data.get(position);
@@ -250,10 +244,19 @@ public class TodoItemAdapter extends ArrayAdapter<ListItem> {
 
     static class ItemHolder
     {
-        TextView tvPriority, tvText, tvDate, tvTime;
-        View barrier;
-        LinearLayout bottomLinearLayout;
-        FloatingActionButton fabEdit, fabDelete, fabExport;
-        CheckBox cb;
+        @BindView(R.id.textview_priority) TextView priorityTextView;
+        @BindView(R.id.text_view_name) TextView taskNameTextView;
+        @BindView(R.id.text_view_date_due) TextView dateDueTextView;
+        @BindView(R.id.text_view_time_due) TextView timeDueTextView;
+        @BindView(R.id.check_box_complete) CheckBox completeCheckBox;
+        @BindView(R.id.fab_edit) FloatingActionButton editFab;
+        @BindView(R.id.fab_delete) FloatingActionButton deleteFab;
+        @BindView(R.id.fab_export) FloatingActionButton exportFab;
+        @BindView(R.id.ll_listitem_bottom) LinearLayout bottomLinearLayout;
+
+
+        public ItemHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

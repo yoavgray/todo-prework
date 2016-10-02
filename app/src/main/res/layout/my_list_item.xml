@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:padding="8dp"
     android:orientation="vertical"
+    android:divider="@drawable/divider_vertical"
+    android:showDividers="middle"
     android:descendantFocusability="blocksDescendants">
     <LinearLayout
         android:id="@+id/linear_layout_info"
@@ -30,7 +32,7 @@
             android:fontFamily="monospace"
             android:layout_weight="3"/>
         <TextView
-            android:id="@+id/tv_list_view"
+            android:id="@+id/text_view_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -51,17 +53,17 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_day_due"
+                android:id="@+id/text_view_date_due"
                 android:paddingBottom="5dp"
                 android:text="@string/date"
                 style="@style/date_time_style"/>
             <TextView
-                android:id="@+id/tv_time_due"
+                android:id="@+id/text_view_time_due"
                 android:text="@string/time"
                 style="@style/date_time_style"/>
 
             <CheckBox
-                android:id="@+id/cb_complete"
+                android:id="@+id/check_box_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/complete"
@@ -71,20 +73,14 @@
                 android:onClick="notifyChange" />
         </LinearLayout>
     </LinearLayout>
-    <View
-        android:id="@+id/listItem_vertical_barrier"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/views_vertical_margin"
-        android:layout_marginTop="2dp"
-        android:visibility="gone"
-        android:background="@color/colorBarrier"/>
+
     <LinearLayout
         android:id="@+id/ll_listitem_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:visibility="gone"
+        android:paddingTop="6dp"
         android:orientation="horizontal">
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_edit"
