@@ -23,8 +23,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onFinish(){
-                //set the new Content of your activity
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                // Added this so onBackPressed would not go back to the splash screen
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         }.start();

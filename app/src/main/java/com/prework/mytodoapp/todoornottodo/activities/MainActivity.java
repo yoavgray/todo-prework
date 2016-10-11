@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
     SharedPreferences settings;
+    boolean isBackPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +120,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (dataSource.isOpen()) {
             dataSource.close();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!isBackPressedOnce) {
+            isBackPressedOnce = true;
+            Toast.makeText(this,"Click Back button again to exit app", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    isBackPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -307,19 +327,6 @@ public class MainActivity extends AppCompatActivity {
     //through clicking on the checkbox, to save parameters
     public void notifyChange(View v) {
         itemsAdapter.notifyDataSetChanged();
-    }
-
-    //extracting values from EditTaskFragment dialog
-    public void onUserSelectValue(String text, int position) {
-        if (text != null) {
-            //extracting changed task and position in the items ArrayList
-            ListItem thisItem = items.get(position);
-            dataSource.updateListItem(UPDATE_TASK, thisItem.getId(), 0, text, false, "", "");
-            thisItem.setText(text);
-            itemsAdapter.notifyDataSetChanged();
-        } else {
-            Toast.makeText(getBaseContext(), "Task was not changed", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void onUserSendMail(String emailContent) {
