@@ -41,35 +41,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.lvItems) ListView itemsListView;
+
     private static final int REQUEST_CODE_CHOOSE_TIME = 1;
-    private static final String TASK_ID_FILE = "MyTaskIdFile";
     private static final int UPDATE_PRIORITY = 0;
     private static final int UPDATE_TASK = 1;
     private static final int UPDATE_IS_CHECKED = 2;
     private static final int UPDATE_TIME_AND_DATE = 3;
+    private static final String TASK_ID_FILE = "MyTaskIdFile";
     private static int taskId;
 
     ListItemDataSource dataSource;
     List<ListItem> items;
     TodoItemAdapter itemsAdapter;
-    ListView lvItems;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
+    SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, 0);
+        settings = getSharedPreferences(TASK_ID_FILE, 0);
         taskId = settings.getInt("taskId", 0);
         dataSource = new ListItemDataSource(this);
         dataSource.open();
         items = new ArrayList<>();
         dataSource.getAllItems(items);
 
-        setupViews();
+        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
+        itemsListView.setAdapter(itemsAdapter);
         setupListViewListener();
         ActionBar ab = getSupportActionBar();
         Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.logo_actionbar, null);
@@ -106,31 +113,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-
-        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("taskId", taskId);
-
-        // Commit the edits!
-        editor.apply();
-
-        if (dataSource.isOpen()) {
-            dataSource.close();
-        }
-    }
-
-    @Override
     protected void onStop() {
         super.onStop();
-
-        SharedPreferences settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("taskId", taskId);
-
-        // Commit the edits!
-        editor.apply();
 
         if (dataSource.isOpen()) {
             dataSource.close();
@@ -190,15 +174,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setupViews() {
-        itemsAdapter = new TodoItemAdapter(this, R.layout.my_list_item, items);
-        lvItems = (ListView)findViewById(R.id.lvItems);
-        assert lvItems != null;
-        lvItems.setAdapter(itemsAdapter);
-    }
-
     private void setupListViewListener() {
-        lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        itemsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogStyle);
@@ -227,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 items.get(position).setShown(!items.get(position).isShown());
@@ -284,6 +261,14 @@ public class MainActivity extends AppCompatActivity {
                             taskIntent.putExtra("taskId",taskId);
                             pendingIntent = PendingIntent.getBroadcast(this, taskId, taskIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                             taskId++;
+
+                            settings = getSharedPreferences(TASK_ID_FILE, Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putInt("taskId", taskId);
+
+                            // Commit the edits!
+                            editor.apply();
+
                             //Set alarm with the right offset
                             long timeInMs = data.getLongExtra("timeInMs", 1);
                             alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMs, pendingIntent);
